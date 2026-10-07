@@ -54,6 +54,38 @@ typography:
     fontWeight: 700
     lineHeight: 1
     fontFeature: "tnum"
+  display-desktop:
+    fontFamily: "Bricolage Grotesque, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "7.5rem"
+    fontWeight: 800
+    lineHeight: 0.9
+    letterSpacing: "-0.04em"
+    fontFeature: "tnum"
+  figure:
+    fontFamily: "Bricolage Grotesque, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "2rem"
+    fontWeight: 800
+    lineHeight: 1
+    letterSpacing: "-0.03em"
+    fontFeature: "tnum"
+  row-title:
+    fontFamily: "Bricolage Grotesque, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "15px"
+    fontWeight: 700
+    lineHeight: 1.3
+    fontFeature: "tnum"
+  caption:
+    fontFamily: "Bricolage Grotesque, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "12px"
+    fontWeight: 400
+    lineHeight: 1.35
+    fontFeature: "tnum"
+  micro:
+    fontFamily: "Bricolage Grotesque, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "11px"
+    fontWeight: 700
+    lineHeight: 1
+    fontFeature: "tnum"
 rounded:
   none: "0px"
 spacing:
@@ -169,6 +201,7 @@ Highlighter Lime doubles as the system's one non-category accent: text selection
 - **Title** (800, 1.25rem to 1.5rem, tight tracking): section headings such as "Latest spending" and "Where it went".
 - **Body** (400 to 600, 1rem, 1.5): prose, field values, list titles at 15px bold. Long text caps at max-w-prose.
 - **Label** (700, 13px; 11px in tab labels and small tags): day headings, story-card captions, row meta, category tags (lowercase).
+- **Named steps between those** (recorded as their own tokens so the design checker recognises them): `display-desktop` 7.5rem for the desktop home total, `figure` 2rem for story-card and recap-preview figures, `row-title` 15px bold for list rows and nav links, `caption` 12px for secondary amounts under a row's main figure, `micro` 11px bold for tab labels, small status tags and chart axis labels.
 
 ### Named Rules
 **The Tabular Rule.** `font-variant-numeric: tabular-nums` is set on body and inherited everywhere. Amounts are exact and line up; never switch to proportional figures for money.

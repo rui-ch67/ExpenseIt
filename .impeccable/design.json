@@ -307,6 +307,26 @@
       "label": {
         "displayName": "Label",
         "purpose": "Day headings, captions, row meta, lowercase category tags; 11px in tab labels."
+      },
+      "display-desktop": {
+        "displayName": "Display (desktop)",
+        "purpose": "The month total on the desktop home colour block."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Story-card and recap-preview figures."
+      },
+      "row-title": {
+        "displayName": "Row title",
+        "purpose": "List row titles and navigation links, bold."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Secondary amounts under a row's main figure (e.g. the original currency)."
+      },
+      "micro": {
+        "displayName": "Micro",
+        "purpose": "Tab-bar labels, small status tags and chart axis labels, bold."
       }
     },
     "shadows": [

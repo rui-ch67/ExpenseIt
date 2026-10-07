@@ -32,12 +32,12 @@ export interface Category {
 export const DEFAULT_CATEGORIES: ReadonlyArray<{ name: string; color: CategoryColor }> = [
   { name: "Food", color: "orange" },
   { name: "Grocery", color: "lime" },
-  { name: "Transport", color: "sky" },
-  { name: "Shopping", color: "fuchsia" },
-  { name: "Bills", color: "amber" },
-  { name: "Entertainment", color: "violet" },
-  { name: "Health", color: "emerald" },
-  { name: "Education", color: "indigo" },
+  { name: "Transport", color: "indigo" },
+  { name: "Shopping", color: "amber" },
+  { name: "Bills", color: "violet" },
+  { name: "Entertainment", color: "fuchsia" },
+  { name: "Health", color: "teal" },
+  { name: "Education", color: "sky" },
   { name: "Other", color: "slate" },
 ];
 

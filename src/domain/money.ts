@@ -62,6 +62,10 @@ export class Money {
     return Money.ofMinor(this.minor - other.minor, this.currency);
   }
 
+  abs(): Money {
+    return Money.ofMinor(Math.abs(this.minor), this.currency);
+  }
+
   isZero(): boolean {
     return this.minor === 0;
   }

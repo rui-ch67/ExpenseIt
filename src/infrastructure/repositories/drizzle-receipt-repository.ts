@@ -39,6 +39,7 @@ export class DrizzleReceiptRepository implements ReceiptRepository {
           currency: receipt.currency,
           totalMinor: receipt.total?.minor ?? null,
           imagePath: receipt.imagePath,
+          suggestedCategoryId: receipt.suggestedCategoryId ?? null,
           extraction: receipt.extraction ?? null,
         })
         .returning();

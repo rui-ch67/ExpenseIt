@@ -204,11 +204,16 @@ export class ReceiptService {
   }
 
   private async read(userId: string, receipt: Receipt, image: ReceiptImage): Promise<ScanResult> {
-    const fallbackCurrency = await this.settings.homeCurrency(userId);
+    const [fallbackCurrency, categories] = await Promise.all([
+      this.settings.homeCurrency(userId),
+      this.categories.list(userId),
+    ]);
     try {
       const { receipt: extracted, model, raw } = await this.extractor.extract(image, {
         fallbackCurrency,
+        categories: categories.map((c) => c.name),
       });
+      const suggested = categories.find((c) => c.name === extracted.suggestedCategory);
       const currency = extracted.currency ?? fallbackCurrency;
       const updated = await this.receipts.update(userId, receipt.id, {
         status: "ready",
@@ -217,6 +222,7 @@ export class ReceiptService {
         currency,
         total: extracted.total,
         items: extracted.items,
+        suggestedCategoryId: suggested?.id ?? null,
         extraction: { model, raw },
       });
       return { receipt: updated!, problem: null };
@@ -234,6 +240,17 @@ export class ReceiptService {
       const failed = await this.receipts.update(userId, receipt.id, { status: "failed" });
       return { receipt: failed!, problem };
     }
+  }
+
+  /** How many more scans this user can make today. */
+  async scansLeft(user: { id: string; isDemo: boolean }): Promise<number> {
+    const day = this.clock.today();
+    const userLimit = user.isDemo ? this.limits.perDemoUser : this.limits.perUser;
+    const [mine, everyone] = await Promise.all([
+      this.limiter.used(`scan:user:${user.id}`, day),
+      this.limiter.used("scan:global", day),
+    ]);
+    return Math.max(0, Math.min(userLimit - mine, this.limits.global - everyone));
   }
 
   private async consumeScan(user: { id: string; isDemo: boolean }): Promise<void> {

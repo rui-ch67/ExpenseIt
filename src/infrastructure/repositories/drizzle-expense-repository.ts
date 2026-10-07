@@ -1,16 +1,18 @@
 import { and, desc, eq, gte, ilike, inArray, isNull, lte, ne, or, type SQL, sql } from "drizzle-orm";
 import type {
   CategoryTotal,
+  CurrencyTotal,
   DayTotal,
   ExpensePatch,
   ExpenseQuery,
   ExpenseRepository,
   HomeAmountUpdate,
+  MerchantTotal,
   MonthTotal,
   NewExpense,
   Page,
 } from "@/application/ports";
-import type { CurrencyCode } from "@/domain/currency";
+import { type CurrencyCode, parseCurrencyCode } from "@/domain/currency";
 import { firstDayOf, type IsoDate, lastDayOf, type YearMonth } from "@/domain/dates";
 import type { Expense } from "@/domain/expense";
 import type { Database } from "../db/client";
@@ -76,6 +78,15 @@ export class DrizzleExpenseRepository implements ExpenseRepository {
       created.push(...rows.map(toExpense));
     }
     return created;
+  }
+
+  async receiptsWithExpenses(userId: string, receiptIds: readonly string[]): Promise<Set<string>> {
+    if (receiptIds.length === 0) return new Set();
+    const rows = await this.db
+      .selectDistinct({ receiptId: expenses.receiptId })
+      .from(expenses)
+      .where(and(eq(expenses.userId, userId), inArray(expenses.receiptId, [...receiptIds])));
+    return new Set(rows.flatMap((r) => (r.receiptId ? [r.receiptId] : [])));
   }
 
   async listByReceipt(userId: string, receiptId: string): Promise<Expense[]> {
@@ -183,6 +194,51 @@ export class DrizzleExpenseRepository implements ExpenseRepository {
       .groupBy(expenses.spentOn)
       .orderBy(expenses.spentOn);
     return rows.map((r) => ({ day: r.day as IsoDate, homeMinor: r.homeMinor }));
+  }
+
+  async totalsByMerchant(
+    userId: string,
+    homeCurrency: CurrencyCode,
+    from: IsoDate,
+    to: IsoDate,
+    options: { categoryId?: string | null; limit?: number } = {},
+  ): Promise<MerchantTotal[]> {
+    const count = sql<number>`count(*)`.mapWith(Number);
+    const conditions = [this.inRange(userId, homeCurrency, from, to)!];
+    if (options.categoryId !== undefined) {
+      conditions.push(
+        options.categoryId === null
+          ? isNull(expenses.categoryId)
+          : eq(expenses.categoryId, options.categoryId),
+      );
+    }
+    return this.db
+      .select({ title: expenses.title, count, homeMinor: homeTotal })
+      .from(expenses)
+      .where(and(...conditions))
+      .groupBy(expenses.title)
+      .orderBy(desc(count), desc(homeTotal))
+      .limit(options.limit ?? 5);
+  }
+
+  async totalsByCurrency(
+    userId: string,
+    homeCurrency: CurrencyCode,
+    from: IsoDate,
+    to: IsoDate,
+  ): Promise<CurrencyTotal[]> {
+    const rows = await this.db
+      .select({
+        currency: expenses.currency,
+        count: sql<number>`count(*)`.mapWith(Number),
+        amountMinor: sql<number>`sum(${expenses.amountMinor})`.mapWith(Number),
+        homeMinor: homeTotal,
+      })
+      .from(expenses)
+      .where(this.inRange(userId, homeCurrency, from, to))
+      .groupBy(expenses.currency)
+      .orderBy(desc(homeTotal));
+    return rows.map((r) => ({ ...r, currency: parseCurrencyCode(r.currency) }));
   }
 
   async listNotInHomeCurrency(userId: string, homeCurrency: CurrencyCode): Promise<Expense[]> {

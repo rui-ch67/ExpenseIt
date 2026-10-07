@@ -30,12 +30,12 @@ for (const model of models.length > 0 ? models : DEFAULT_GEMINI_MODELS) {
   try {
     const { receipt } = await new GeminiReceiptExtractor(process.env.GEMINI_API_KEY!, [model]).extract(
       image,
-      { fallbackCurrency: "GBP" },
+      { fallbackCurrency: "GBP", categories: ["Food", "Grocery", "Transport", "Shopping", "Bills", "Other"] },
     );
     const seconds = ((performance.now() - started) / 1000).toFixed(1);
     const itemSum = receipt.items.reduce((sum, i) => sum + i.total.minor, 0) / 100;
     console.log(`\n■ ${model} (${seconds}s)`);
-    console.log(`  ${receipt.merchant} · ${receipt.purchasedOn} · ${receipt.currency} · total ${receipt.total?.toDecimalString()} · items add up to ${itemSum.toFixed(2)}`);
+    console.log(`  ${receipt.merchant} · ${receipt.purchasedOn} · ${receipt.currency} · total ${receipt.total?.toDecimalString()} · items add up to ${itemSum.toFixed(2)} · category ${receipt.suggestedCategory}`);
     for (const item of receipt.items) {
       console.log(`  ${item.quantity.padStart(6)} × ${item.description.padEnd(28)} ${item.total.toDecimalString().padStart(7)}`);
     }

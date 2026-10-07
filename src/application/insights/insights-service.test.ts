@@ -66,6 +66,40 @@ describe("month summary", () => {
   });
 });
 
+describe("comparing like with like", () => {
+  it("compares the month so far with the same days of last month", async () => {
+    // Clock is 10 Oct; September's only spend (rent) was on the 1st.
+    const summary = await services.insights.monthSummary(user, october);
+    expect(summary.previousToDate?.format()).toBe("£600.00");
+    expect(summary.count).toBe(5);
+    const past = await services.insights.monthSummary(user, parseYearMonth("2026-09"));
+    expect(past.previousToDate).toBeNull();
+  });
+});
+
+describe("month recap", () => {
+  it("finds the top category, its places, the favourite place, the biggest day and spending abroad", async () => {
+    const recap = await services.insights.monthRecap(user, october);
+    expect(recap.topCategory?.category?.name).toBe("Grocery");
+    expect(recap.topCategory?.places.map((p) => p.title)).toEqual(["Tesco", "Aldi"]);
+    expect(recap.biggestDay?.day).toBe("2026-10-01");
+    expect(recap.biggestDay?.total.format()).toBe("£40.00");
+    expect(recap.abroad).toEqual([
+      expect.objectContaining({ currency: "EUR", count: 1 }),
+    ]);
+    expect(recap.abroad[0].spent.format()).toBe("€5.00");
+    expect(recap.abroad[0].home.format()).toBe("£4.00");
+  });
+
+  it("is empty but safe for a month with no spending", async () => {
+    const recap = await services.insights.monthRecap(user, parseYearMonth("2026-07"));
+    expect(recap.topCategory).toBeNull();
+    expect(recap.favouritePlace).toBeNull();
+    expect(recap.biggestDay).toBeNull();
+    expect(recap.summary.total.isZero()).toBe(true);
+  });
+});
+
 describe("monthly trend", () => {
   it("returns a zero-filled run of months ending now", async () => {
     const trend = await services.insights.monthlyTrend(user, 3);

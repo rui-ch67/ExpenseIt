@@ -28,6 +28,8 @@ export interface Receipt {
   readonly total: Money | null;
   /** Storage path of the receipt photo, or null if none was kept. */
   readonly imagePath: string | null;
+  /** The category the AI thought the whole receipt belongs to, if any. */
+  readonly suggestedCategoryId: string | null;
   readonly items: readonly ReceiptItem[];
   readonly createdAt: Date;
   readonly updatedAt: Date;
@@ -39,6 +41,8 @@ export interface ExtractedReceipt {
   readonly purchasedOn: IsoDate | null;
   readonly currency: CurrencyCode | null;
   readonly total: Money | null;
+  /** Name of the best-fitting category from the user's own list, if any. */
+  readonly suggestedCategory: string | null;
   readonly items: ReadonlyArray<{
     readonly description: string;
     readonly quantity: string;

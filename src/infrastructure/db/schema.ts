@@ -79,6 +79,9 @@ export const receipts = pgTable(
     currency: varchar("currency", { length: 3 }).notNull(),
     totalMinor: minorUnits("total_minor"),
     imagePath: text("image_path"),
+    suggestedCategoryId: uuid("suggested_category_id").references(() => categories.id, {
+      onDelete: "set null",
+    }),
     extraction: jsonb("extraction"),
     ...timestamps,
   },

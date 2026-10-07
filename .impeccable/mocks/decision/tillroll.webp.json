@@ -1,0 +1,5 @@
+{
+  "source": "html-mock",
+  "note": "No image generation in this harness. Rendered with headless Chrome from a hand-built HTML mock of the home screen at 390x844 (2x), same sample data on every card.",
+  "prompt": "ExpenseIt home screen, tillroll direction: month switcher, October-so-far total £849.23, category breakdown, Food budget alert (£8.30 left of £50), Scan a receipt / Add by hand actions, recent expenses, bottom tab navigation."
+}

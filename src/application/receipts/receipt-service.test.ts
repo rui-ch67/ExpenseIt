@@ -24,6 +24,7 @@ const grocer: ExtractedReceipt = {
   purchasedOn: parseIsoDate("2026-09-14"),
   currency: "GBP",
   total: gbp("24.11"),
+  suggestedCategory: "Grocery",
   items: [
     { description: "Sourdough loaf", quantity: "1", total: gbp("2.40") },
     { description: "Semi skimmed milk", quantity: "1", total: gbp("1.25") },
@@ -71,6 +72,8 @@ describe("scanning", () => {
     expect(receipt.items.map((i) => i.quantity)).toContain("0.845");
     expect(receipt.imagePath).toMatch(/^receipts\/alice\/[\w-]+\.jpg$/);
     expect(images.files.has(receipt.imagePath!)).toBe(true);
+    const grocery = (await services.categories.list(alice.id)).find((c) => c.name === "Grocery");
+    expect(receipt.suggestedCategoryId).toBe(grocery?.id);
   });
 
   it("discards photos that aren't receipts", async () => {
@@ -95,6 +98,8 @@ describe("scanning", () => {
   it("limits demo visitors to 5 scans a day", async () => {
     extractor.willReturn(...Array(6).fill(grocer));
     for (let i = 0; i < 5; i++) await services.receipts.scan(visitor, photo);
+    expect(await services.receipts.scansLeft(visitor)).toBe(0);
+    expect(await services.receipts.scansLeft(alice)).toBe(25);
     await expect(services.receipts.scan(visitor, photo)).rejects.toThrow(LimitReachedError);
     // Nothing was uploaded or sent to OCR for the refused scan.
     expect(extractor.calls).toBe(5);
@@ -155,6 +160,7 @@ describe("saving as expenses", () => {
       purchasedOn: parseIsoDate("2026-09-18"),
       currency: "EUR",
       total: eur("18.50"),
+      suggestedCategory: null,
       items: [{ description: "Café crème", quantity: "2", total: eur("18.50") }],
     });
     const { receipt } = await services.receipts.scan(alice, photo);

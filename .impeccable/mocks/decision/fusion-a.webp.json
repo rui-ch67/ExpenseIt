@@ -1,0 +1,5 @@
+{
+  "source": "html-mock",
+  "note": "No image generation in this harness. Two hand-built HTML mocks (home screen and a monthly recap story) rendered with headless Chrome at 390x844 (2x) and placed side by side.",
+  "prompt": "ExpenseIt fusion a: home screen (October so far £849.23, category bands, Food budget alert, Scan a receipt, recent expenses) beside a \"Your September, wrapped\" story card."
+}

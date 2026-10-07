@@ -78,6 +78,10 @@ export class ExpenseService {
     return this.expenses.listByReceipt(userId, receiptId);
   }
 
+  savedReceiptIds(userId: string, receiptIds: readonly string[]): Promise<Set<string>> {
+    return this.expenses.receiptsWithExpenses(userId, receiptIds);
+  }
+
   async update(userId: string, id: string, input: ExpenseInput): Promise<Expense> {
     const existing = await this.get(userId, id);
     // Keep the receipt link unless the caller explicitly changes it.

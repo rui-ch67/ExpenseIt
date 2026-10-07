@@ -44,3 +44,8 @@ next-env.d.ts
 # impeccable (per-developer state)
 .impeccable/config.local.json
 .impeccable/hook.cache.json
+.impeccable/review/
+.impeccable/questions/
+
+# Claude Code (per-machine)
+.claude/settings.local.json

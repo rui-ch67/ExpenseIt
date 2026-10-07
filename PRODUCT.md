@@ -13,7 +13,7 @@ Mobile-first, installable as a PWA so it behaves like an app on a phone, and ful
 - Next.js + TypeScript, deployed on Vercel.
 - Neon Postgres for data (scales to zero when idle, wakes on the next request, so the portfolio link always works).
 - Vercel Blob for receipt images (1 GB on the free plan).
-- Authentication inside the app (Auth.js or Better Auth; library not yet chosen).
+- Authentication inside the app with Better Auth: email and password, plus an anonymous one-click demo account.
 - Receipt OCR: Google Gemini on the free AI Studio tier (3.5 Flash, falling back to 3.1 Flash-Lite and 3.5 Flash-Lite), called only from the server and behind a provider interface so it can be swapped.
 
 Every service must stay on a free tier. Scale is not a goal.
@@ -51,7 +51,7 @@ Confirmed scope:
 - Recurring expenses and subscriptions, logged automatically each period, with upcoming charges listed.
 - Search, filters (date, category, amount) and CSV export.
 - Splitting a receipt across categories: on the receipt review screen every item starts in one category, and the user can move individual items to others. Saving creates one expense per category, all linked to the same receipt. Discounts, tax and any gap between the item sum and the receipt total are shared out in proportion to item prices, so the expenses always add up to exactly the receipt total. Receipts that aren't split behave as before: one expense.
-- Multi-currency: each user has a home currency (ISO 4217 code); expenses can be logged in any currency and are converted to the home currency using daily exchange rates (rate source not yet chosen).
+- Multi-currency: each user has a home currency (ISO 4217 code); expenses can be logged in any of the 30 currencies the European Central Bank publishes and are converted to the home currency at that day's reference rate (via Frankfurter).
 - Accounts with sign-in, plus a one-click demo account.
 
 Constraints:
@@ -61,8 +61,7 @@ Constraints:
 - Code follows SOLID principles and stays easy to read. Keep the original Kotlin design (MVVM, repositories, dependency injection) as the conceptual model where it still fits.
 
 Not yet decided:
-- Authentication library and sign-in methods (email, Google, or both).
-- Exchange-rate data source.
+- Whether to add Google sign-in alongside email and password.
 
 ## Brand Commitments
 

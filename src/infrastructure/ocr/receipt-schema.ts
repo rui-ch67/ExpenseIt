@@ -15,9 +15,15 @@ import type { ExtractedReceipt } from "@/domain/receipt";
 const AMOUNT = "^-?\\d+(\\.\\d{1,3})?$";
 
 /** JSON Schema sent to the model as its required response format. */
-export const RECEIPT_JSON_SCHEMA = {
+export function receiptJsonSchema(categories: readonly string[]) {
+  return {
   type: "object",
   properties: {
+    category: {
+      type: ["string", "null"],
+      ...(categories.length > 0 && { enum: [...categories, null] }),
+      description: "The single best category for the whole receipt, from the user's list, or null if none fits.",
+    },
     isReceipt: {
       type: "boolean",
       description: "False if the image is not a purchase receipt or is unreadable.",
@@ -60,10 +66,17 @@ export const RECEIPT_JSON_SCHEMA = {
       },
     },
   },
-  required: ["isReceipt", "merchant", "date", "currency", "total", "items"],
-} as const;
+  required: ["isReceipt", "merchant", "date", "currency", "total", "items", "category"],
+  } as const;
+}
 
-export const RECEIPT_PROMPT = `You read photos of shop receipts for an expense tracker.
+export function receiptPrompt(categories: readonly string[]): string {
+  const list = categories.length > 0 ? categories.map((c) => `"${c}"`).join(", ") : "none";
+  return `${RECEIPT_PROMPT}
+- Category: the user's categories are ${list}. Pick the one that fits the receipt as a whole (a supermarket shop is usually groceries), or null.`;
+}
+
+const RECEIPT_PROMPT = `You read photos of shop receipts for an expense tracker.
 Fill in the JSON schema exactly. Rules:
 - Merchant: the business name, not the address or a slogan. Use normal capitalisation (e.g. "Harbour Street Grocer").
 - Date: receipts from the UK and Europe print dates day-first (14/09/2026 is 14 September 2026).
@@ -76,6 +89,7 @@ Fill in the JSON schema exactly. Rules:
 
 const answerSchema = z.object({
   isReceipt: z.boolean(),
+  category: z.string().nullable().optional(),
   merchant: z.string().nullable(),
   date: z.string().nullable(),
   currency: z.string().nullable(),
@@ -104,7 +118,11 @@ function safely<T>(read: () => T): T | null {
  * dropped to null (or the item skipped) rather than failing the whole scan:
  * the user reviews every field anyway.
  */
-export function toExtractedReceipt(answer: unknown, fallbackCurrency: CurrencyCode): ExtractedReceipt {
+export function toExtractedReceipt(
+  answer: unknown,
+  fallbackCurrency: CurrencyCode,
+  categories: readonly string[] = [],
+): ExtractedReceipt {
   const parsed = answerSchema.parse(answer);
   if (!parsed.isReceipt) throw new NotAReceiptError();
 
@@ -120,8 +138,13 @@ export function toExtractedReceipt(answer: unknown, fallbackCurrency: CurrencyCo
     return [{ description, quantity, total }];
   });
 
+  const suggested = parsed.category
+    ? (categories.find((c) => c.toLowerCase() === parsed.category!.trim().toLowerCase()) ?? null)
+    : null;
+
   return {
     merchant: parsed.merchant?.trim().slice(0, 120) || null,
+    suggestedCategory: suggested,
     purchasedOn: parsed.date ? safely(() => parseIsoDate(parsed.date!)) : null,
     currency: detected,
     total: parsed.total ? safely(() => Money.parse(parsed.total!, currency)) : null,

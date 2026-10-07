@@ -1,10 +1,118 @@
 @import "tailwindcss";
 
-/* Placeholder theme. The real design system replaces this in Phase 3. */
-:root {
-  color-scheme: light dark;
+/*
+ * ExpenseIt design tokens.
+ * World: Month in Colour (year-in-review story cards) with own-brand
+ * packaging colour bands. White ground, near-black ink, and one flat ink
+ * per category. Square corners, 2px ink rules, no gradients or shadows.
+ */
+@theme {
+  --font-sans: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #111111;
+  --color-paper: #ffffff;
+  --color-muted: #5f5f5f; /* 6.4:1 on paper */
+  --color-rule: #e4e4e4;
+  --color-wash: #f2f2f0; /* quiet fills: inputs, tracks, empty states */
+  --color-danger: #c42b1c;
+
+  /* Category inks. Each pairs with an on-colour chosen for ≥4.5:1 text. */
+  --color-cat-slate: #5b6170;
+  --color-cat-rose: #ff5468;
+  --color-cat-orange: #ff7a1a;
+  --color-cat-amber: #ffc530;
+  --color-cat-lime: #b6f23a;
+  --color-cat-emerald: #22b35e;
+  --color-cat-teal: #12a594;
+  --color-cat-sky: #3aa8f0;
+  --color-cat-indigo: #3b4bf5;
+  --color-cat-violet: #6a4bd8;
+  --color-cat-fuchsia: #ff3d8b;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-body {
-  font-family: system-ui, sans-serif;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    caret-color: var(--color-ink);
+  }
+
+  ::selection {
+    background: var(--color-cat-lime);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  /* On ink-filled and colour-block surfaces the ring flips to white. */
+  [data-surface="dark"] :focus-visible {
+    outline-color: var(--color-paper);
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1.5px;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-ink) transparent;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      /* "none", not a short duration: a duration alone gives every element an
+         "all" transition, and colours flash for a frame on every change. */
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Scanner: a lime line sweeping down the photo while the AI reads it. */
+@keyframes scan-sweep {
+  from {
+    top: 0;
+  }
+  to {
+    top: calc(100% - 0.25rem);
+  }
+}
+
+.scan-sweep {
+  top: 0;
+  animation: scan-sweep 1.6s var(--ease-out-expo) infinite alternate;
 }

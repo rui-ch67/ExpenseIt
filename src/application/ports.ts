@@ -95,6 +95,20 @@ export interface DayTotal {
   readonly homeMinor: number;
 }
 
+export interface MerchantTotal {
+  readonly title: string;
+  readonly count: number;
+  readonly homeMinor: number;
+}
+
+export interface CurrencyTotal {
+  readonly currency: CurrencyCode;
+  readonly count: number;
+  /** Sum in the currency itself, in its minor units. */
+  readonly amountMinor: number;
+  readonly homeMinor: number;
+}
+
 export interface HomeAmountUpdate {
   readonly id: string;
   readonly homeAmount: Money;
@@ -107,6 +121,8 @@ export interface ExpenseRepository {
   createMany(expenses: readonly NewExpense[]): Promise<Expense[]>;
   findById(userId: string, id: string): Promise<Expense | null>;
   listByReceipt(userId: string, receiptId: string): Promise<Expense[]>;
+  /** Which of these receipts have already been saved as expenses. */
+  receiptsWithExpenses(userId: string, receiptIds: readonly string[]): Promise<Set<string>>;
   update(userId: string, id: string, patch: ExpensePatch): Promise<Expense | null>;
   delete(userId: string, id: string): Promise<boolean>;
   /** Newest first (by date spent, then by when it was logged). */
@@ -133,6 +149,21 @@ export interface ExpenseRepository {
     to: IsoDate,
   ): Promise<DayTotal[]>;
 
+  /** Where money went by place, most visited first. */
+  totalsByMerchant(
+    userId: string,
+    homeCurrency: CurrencyCode,
+    from: IsoDate,
+    to: IsoDate,
+    options?: { categoryId?: string | null; limit?: number },
+  ): Promise<MerchantTotal[]>;
+  totalsByCurrency(
+    userId: string,
+    homeCurrency: CurrencyCode,
+    from: IsoDate,
+    to: IsoDate,
+  ): Promise<CurrencyTotal[]>;
+
   /** Expenses whose home amount isn't in `homeCurrency` yet. */
   listNotInHomeCurrency(userId: string, homeCurrency: CurrencyCode): Promise<Expense[]>;
   updateHomeAmounts(userId: string, updates: readonly HomeAmountUpdate[]): Promise<void>;
@@ -154,6 +185,7 @@ export interface NewReceipt {
   readonly currency: CurrencyCode;
   readonly total: Money | null;
   readonly imagePath: string | null;
+  readonly suggestedCategoryId?: string | null;
   readonly items: readonly NewReceiptItem[];
   /** Raw provider output, kept for debugging and re-parsing. */
   readonly extraction?: unknown;
@@ -204,7 +236,10 @@ export interface ReceiptExtraction {
 
 /** Reads a receipt photo (OCR + understanding). Gemini today; swappable. */
 export interface ReceiptExtractor {
-  extract(image: ReceiptImage, hints: { fallbackCurrency: CurrencyCode }): Promise<ReceiptExtraction>;
+  extract(
+    image: ReceiptImage,
+    hints: { fallbackCurrency: CurrencyCode; categories: readonly string[] },
+  ): Promise<ReceiptExtraction>;
 }
 
 /** Private storage for receipt photos. Paths are only ever served after an ownership check. */
@@ -221,6 +256,7 @@ export interface ImageStore {
  */
 export interface UsageLimiter {
   tryConsume(key: string, day: IsoDate, limit: number): Promise<boolean>;
+  used(key: string, day: IsoDate): Promise<number>;
   release(key: string, day: IsoDate): Promise<void>;
 }
 

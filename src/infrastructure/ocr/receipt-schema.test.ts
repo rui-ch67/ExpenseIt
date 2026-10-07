@@ -23,6 +23,11 @@ describe("toExtractedReceipt", () => {
     expect(receipt.items.map((i) => i.total.minor)).toEqual([240, -150]);
   });
 
+  it("keeps the suggested category only if it's one of the user's own", () => {
+    expect(toExtractedReceipt({ ...answer, category: "grocery" }, "GBP", ["Food", "Grocery"]).suggestedCategory).toBe("Grocery");
+    expect(toExtractedReceipt({ ...answer, category: "Snacks" }, "GBP", ["Food", "Grocery"]).suggestedCategory).toBeNull();
+  });
+
   it("refuses images that aren't receipts", () => {
     expect(() => toExtractedReceipt({ ...answer, isReceipt: false }, "GBP")).toThrow(NotAReceiptError);
   });

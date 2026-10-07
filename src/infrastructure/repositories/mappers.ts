@@ -55,6 +55,7 @@ export function toReceipt(
     currency,
     total: row.totalMinor === null ? null : Money.ofMinor(row.totalMinor, currency),
     imagePath: row.imagePath,
+    suggestedCategoryId: row.suggestedCategoryId,
     items: [...items]
       .sort((a, b) => a.position - b.position)
       .map(

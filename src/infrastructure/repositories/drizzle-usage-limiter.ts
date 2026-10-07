@@ -26,6 +26,14 @@ export class DrizzleUsageLimiter implements UsageLimiter {
     return rows.length > 0;
   }
 
+  async used(key: string, day: IsoDate): Promise<number> {
+    const [row] = await this.db
+      .select({ count: usageCounters.count })
+      .from(usageCounters)
+      .where(and(eq(usageCounters.key, key), eq(usageCounters.day, day)));
+    return row?.count ?? 0;
+  }
+
   /** Gives back a use that didn't happen (e.g. the scan failed before OCR). */
   async release(key: string, day: IsoDate): Promise<void> {
     await this.db

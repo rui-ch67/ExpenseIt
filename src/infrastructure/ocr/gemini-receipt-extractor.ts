@@ -2,7 +2,7 @@ import { ApiError, GoogleGenAI } from "@google/genai";
 import type { ReceiptExtraction, ReceiptExtractor, ReceiptImage } from "@/application/ports";
 import type { CurrencyCode } from "@/domain/currency";
 import { ServiceUnavailableError } from "@/domain/errors";
-import { RECEIPT_JSON_SCHEMA, RECEIPT_PROMPT, toExtractedReceipt } from "./receipt-schema";
+import { receiptJsonSchema, receiptPrompt, toExtractedReceipt } from "./receipt-schema";
 
 /**
  * Tried in order. When a model's free daily quota runs out (429), it is
@@ -50,13 +50,17 @@ export class GeminiReceiptExtractor implements ReceiptExtractor {
 
   async extract(
     image: ReceiptImage,
-    hints: { fallbackCurrency: CurrencyCode },
+    hints: { fallbackCurrency: CurrencyCode; categories: readonly string[] },
   ): Promise<ReceiptExtraction> {
     let lastError: unknown;
     for (const model of this.models) {
       try {
-        const raw = await this.ask(model, image);
-        return { receipt: toExtractedReceipt(raw, hints.fallbackCurrency), model, raw };
+        const raw = await this.ask(model, image, hints.categories);
+        return {
+          receipt: toExtractedReceipt(raw, hints.fallbackCurrency, hints.categories),
+          model,
+          raw,
+        };
       } catch (error) {
         if (error instanceof ApiError && RETRYABLE_STATUS.has(error.status)) {
           lastError = error;
@@ -75,7 +79,7 @@ export class GeminiReceiptExtractor implements ReceiptExtractor {
     );
   }
 
-  private async ask(model: string, image: ReceiptImage): Promise<unknown> {
+  private async ask(model: string, image: ReceiptImage, categories: readonly string[]): Promise<unknown> {
     const response = await this.client.models.generateContent({
       model,
       contents: [
@@ -88,14 +92,14 @@ export class GeminiReceiptExtractor implements ReceiptExtractor {
                 data: Buffer.from(image.bytes).toString("base64"),
               },
             },
-            { text: RECEIPT_PROMPT },
+            { text: receiptPrompt(categories) },
           ],
         },
       ],
       config: {
         temperature: 0,
         responseMimeType: "application/json",
-        responseJsonSchema: RECEIPT_JSON_SCHEMA,
+        responseJsonSchema: receiptJsonSchema(categories),
         abortSignal: AbortSignal.timeout(45_000),
       },
     });

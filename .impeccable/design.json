@@ -1,0 +1,504 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-07T03:40:08.294Z",
+  "title": "Design System: ExpenseIt",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "primary",
+        "displayName": "Press Ink",
+        "canonical": "#111111",
+        "onColor": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0 89.9)",
+          "oklch(27% 0 89.9)",
+          "oklch(39% 0 89.9)",
+          "oklch(51% 0 89.9)",
+          "oklch(63% 0 89.9)",
+          "oklch(75% 0 89.9)",
+          "oklch(86% 0 89.9)",
+          "oklch(95% 0 89.9)"
+        ]
+      },
+      "ink-hover": {
+        "role": "primary",
+        "displayName": "Warm Graphite",
+        "canonical": "#2a2a2a",
+        "tonalRamp": [
+          "oklch(15% 0 89.9)",
+          "oklch(27% 0 89.9)",
+          "oklch(39% 0 89.9)",
+          "oklch(51% 0 89.9)",
+          "oklch(63% 0 89.9)",
+          "oklch(75% 0 89.9)",
+          "oklch(86% 0 89.9)",
+          "oklch(95% 0 89.9)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0 89.9)",
+          "oklch(27% 0 89.9)",
+          "oklch(39% 0 89.9)",
+          "oklch(51% 0 89.9)",
+          "oklch(63% 0 89.9)",
+          "oklch(75% 0 89.9)",
+          "oklch(86% 0 89.9)",
+          "oklch(95% 0 89.9)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Pencil Grey",
+        "canonical": "#5f5f5f",
+        "tonalRamp": [
+          "oklch(15% 0 89.9)",
+          "oklch(27% 0 89.9)",
+          "oklch(39% 0 89.9)",
+          "oklch(51% 0 89.9)",
+          "oklch(63% 0 89.9)",
+          "oklch(75% 0 89.9)",
+          "oklch(86% 0 89.9)",
+          "oklch(95% 0 89.9)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#e4e4e4",
+        "tonalRamp": [
+          "oklch(15% 0 89.9)",
+          "oklch(27% 0 89.9)",
+          "oklch(39% 0 89.9)",
+          "oklch(51% 0 89.9)",
+          "oklch(63% 0 89.9)",
+          "oklch(75% 0 89.9)",
+          "oklch(86% 0 89.9)",
+          "oklch(95% 0 89.9)"
+        ]
+      },
+      "wash": {
+        "role": "neutral",
+        "displayName": "Wash",
+        "canonical": "#f2f2f0",
+        "tonalRamp": [
+          "oklch(15% 0.001 106.4)",
+          "oklch(27% 0.001 106.4)",
+          "oklch(39% 0.001 106.4)",
+          "oklch(51% 0.002 106.4)",
+          "oklch(63% 0.002 106.4)",
+          "oklch(75% 0.002 106.4)",
+          "oklch(86% 0.002 106.4)",
+          "oklch(95% 0.003 106.4)"
+        ]
+      },
+      "danger": {
+        "role": "error",
+        "displayName": "Correction Red",
+        "canonical": "#c42b1c",
+        "tonalRamp": [
+          "oklch(15% 0.125 30.1)",
+          "oklch(27% 0.145 30.1)",
+          "oklch(39% 0.166 30.1)",
+          "oklch(51% 0.187 30.1)",
+          "oklch(63% 0.175 30.1)",
+          "oklch(75% 0.154 30.1)",
+          "oklch(86% 0.135 30.1)",
+          "oklch(95% 0.12 30.1)"
+        ]
+      },
+      "cat-slate": {
+        "role": "secondary",
+        "displayName": "Bus-Stop Slate",
+        "canonical": "#5b6170",
+        "onColor": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.017 268.2)",
+          "oklch(27% 0.02 268.2)",
+          "oklch(39% 0.023 268.2)",
+          "oklch(51% 0.025 268.2)",
+          "oklch(63% 0.022 268.2)",
+          "oklch(75% 0.019 268.2)",
+          "oklch(86% 0.017 268.2)",
+          "oklch(95% 0.015 268.2)"
+        ]
+      },
+      "cat-rose": {
+        "role": "secondary",
+        "displayName": "Signal Rose",
+        "canonical": "#ff5468",
+        "onColor": "#111111",
+        "tonalRamp": [
+          "oklch(15% 0.107 17.9)",
+          "oklch(27% 0.129 17.9)",
+          "oklch(39% 0.151 17.9)",
+          "oklch(51% 0.174 17.9)",
+          "oklch(63% 0.196 17.9)",
+          "oklch(75% 0.194 17.9)",
+          "oklch(86% 0.173 17.9)",
+          "oklch(95% 0.157 17.9)"
+        ]
+      },
+      "cat-orange": {
+        "role": "secondary",
+        "displayName": "Packet Orange",
+        "canonical": "#ff7a1a",
+        "onColor": "#111111",
+        "tonalRamp": [
+          "oklch(15% 0.09 48.9)",
+          "oklch(27% 0.111 48.9)",
+          "oklch(39% 0.131 48.9)",
+          "oklch(51% 0.151 48.9)",
+          "oklch(63% 0.171 48.9)",
+          "oklch(75% 0.182 48.9)",
+          "oklch(86% 0.164 48.9)",
+          "oklch(95% 0.149 48.9)"
+        ]
+      },
+      "cat-amber": {
+        "role": "secondary",
+        "displayName": "Sunflower",
+        "canonical": "#ffc530",
+        "onColor": "#111111",
+        "tonalRamp": [
+          "oklch(15% 0.06 85.2)",
+          "oklch(27% 0.078 85.2)",
+          "oklch(39% 0.095 85.2)",
+          "oklch(51% 0.113 85.2)",
+          "oklch(63% 0.13 85.2)",
+          "oklch(75% 0.148 85.2)",
+          "oklch(86% 0.162 85.2)",
+          "oklch(95% 0.149 85.2)"
+        ]
+      },
+      "cat-lime": {
+        "role": "secondary",
+        "displayName": "Highlighter Lime",
+        "canonical": "#b6f23a",
+        "onColor": "#111111",
+        "tonalRamp": [
+          "oklch(15% 0.07 126.6)",
+          "oklch(27% 0.093 126.6)",
+          "oklch(39% 0.116 126.6)",
+          "oklch(51% 0.138 126.6)",
+          "oklch(63% 0.161 126.6)",
+          "oklch(75% 0.184 126.6)",
+          "oklch(86% 0.204 126.6)",
+          "oklch(95% 0.198 126.6)"
+        ]
+      },
+      "cat-emerald": {
+        "role": "secondary",
+        "displayName": "Leaf Emerald",
+        "canonical": "#22b35e",
+        "onColor": "#111111",
+        "tonalRamp": [
+          "oklch(15% 0.09 151.5)",
+          "oklch(27% 0.108 151.5)",
+          "oklch(39% 0.126 151.5)",
+          "oklch(51% 0.145 151.5)",
+          "oklch(63% 0.163 151.5)",
+          "oklch(75% 0.158 151.5)",
+          "oklch(86% 0.141 151.5)",
+          "oklch(95% 0.128 151.5)"
+        ]
+      },
+      "cat-teal": {
+        "role": "secondary",
+        "displayName": "Pharmacy Teal",
+        "canonical": "#12a594",
+        "onColor": "#111111",
+        "tonalRamp": [
+          "oklch(15% 0.063 182)",
+          "oklch(27% 0.075 182)",
+          "oklch(39% 0.087 182)",
+          "oklch(51% 0.099 182)",
+          "oklch(63% 0.112 182)",
+          "oklch(75% 0.103 182)",
+          "oklch(86% 0.092 182)",
+          "oklch(95% 0.083 182)"
+        ]
+      },
+      "cat-sky": {
+        "role": "secondary",
+        "displayName": "Clear Sky",
+        "canonical": "#3aa8f0",
+        "onColor": "#111111",
+        "tonalRamp": [
+          "oklch(15% 0.072 242.1)",
+          "oklch(27% 0.088 242.1)",
+          "oklch(39% 0.103 242.1)",
+          "oklch(51% 0.119 242.1)",
+          "oklch(63% 0.134 242.1)",
+          "oklch(75% 0.137 242.1)",
+          "oklch(86% 0.123 242.1)",
+          "oklch(95% 0.112 242.1)"
+        ]
+      },
+      "cat-indigo": {
+        "role": "secondary",
+        "displayName": "Ultramarine",
+        "canonical": "#3b4bf5",
+        "onColor": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.166 270.2)",
+          "oklch(27% 0.192 270.2)",
+          "oklch(39% 0.219 270.2)",
+          "oklch(51% 0.246 270.2)",
+          "oklch(63% 0.225 270.2)",
+          "oklch(75% 0.198 270.2)",
+          "oklch(86% 0.173 270.2)",
+          "oklch(95% 0.153 270.2)"
+        ]
+      },
+      "cat-violet": {
+        "role": "secondary",
+        "displayName": "Tariff Violet",
+        "canonical": "#6a4bd8",
+        "onColor": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.135 287.3)",
+          "oklch(27% 0.157 287.3)",
+          "oklch(39% 0.179 287.3)",
+          "oklch(51% 0.201 287.3)",
+          "oklch(63% 0.186 287.3)",
+          "oklch(75% 0.164 287.3)",
+          "oklch(86% 0.144 287.3)",
+          "oklch(95% 0.127 287.3)"
+        ]
+      },
+      "cat-fuchsia": {
+        "role": "secondary",
+        "displayName": "Bubblegum Fuchsia",
+        "canonical": "#ff3d8b",
+        "onColor": "#111111",
+        "tonalRamp": [
+          "oklch(15% 0.124 1.9)",
+          "oklch(27% 0.149 1.9)",
+          "oklch(39% 0.174 1.9)",
+          "oklch(51% 0.199 1.9)",
+          "oklch(63% 0.224 1.9)",
+          "oklch(75% 0.217 1.9)",
+          "oklch(86% 0.194 1.9)",
+          "oklch(95% 0.175 1.9)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The month total and recap headlines only; 7.5rem on desktop home."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page titles; 2rem variant for story-card figures."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section headings (1.25rem to 1.5rem)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prose, field values, row titles at 15px bold."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Day headings, captions, row meta, lowercase category tags; 11px in tab labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "tab-active-bar",
+        "value": "inset 0 4px 0 var(--color-ink)",
+        "purpose": "Line-drawing only: the 4px ink bar on the active phone tab. Not depth."
+      },
+      {
+        "name": "sweep-outline",
+        "value": "0 0 0 1px var(--color-ink)",
+        "purpose": "Line-drawing only: 1px ink outline on the scanner sweep line. Not depth."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Story-card hover lift and the scanner sweep."
+      },
+      {
+        "name": "button-colour",
+        "value": "150ms",
+        "purpose": "Button colour transitions."
+      },
+      {
+        "name": "card-lift",
+        "value": "200ms translateY(-2px)",
+        "purpose": "Linked story cards on hover."
+      },
+      {
+        "name": "count-up",
+        "value": "900ms exponential ease-out, once per session",
+        "purpose": "Home total; skipped under reduced motion."
+      },
+      {
+        "name": "recap-advance",
+        "value": "6000ms per story, hard cut",
+        "purpose": "Recap auto-advance; starts paused under reduced motion."
+      },
+      {
+        "name": "scan-sweep",
+        "value": "1.6s ease-out-expo infinite alternate",
+        "purpose": "Lime line sweeping the receipt photo while it is read."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "transition: none; animation-duration: 0.01ms",
+        "purpose": "Global reduced-motion override; none, not a short duration, so colours never flash."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "base",
+        "value": "360px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ink-filled main action, e.g. Scan a receipt.",
+      "html": "<button class=\"ds-btn-primary\"><svg aria-hidden=\"true\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z\"/><circle cx=\"12\" cy=\"13\" r=\"3\"/></svg>Scan a receipt</button>",
+      "css": ".ds-btn-primary { font-family: var(--font-sans, 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif); font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 2px solid var(--color-ink, #111111); border-radius: 0; background: var(--color-ink, #111111); color: #ffffff; padding: 12px 16px; font-size: 16px; font-weight: 700; line-height: 1; cursor: pointer; transition: background-color 150ms; } .ds-btn-primary:hover { background: #2a2a2a; } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-ink, #111111); outline-offset: 2px; } .ds-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outlined companion action, e.g. Add by hand.",
+      "html": "<button class=\"ds-btn-secondary\">Add by hand</button>",
+      "css": ".ds-btn-secondary { font-family: var(--font-sans, 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif); font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 2px solid var(--color-ink, #111111); border-radius: 0; background: var(--color-paper, #ffffff); color: var(--color-ink, #111111); padding: 12px 16px; font-size: 16px; font-weight: 700; line-height: 1; cursor: pointer; transition: background-color 150ms; } .ds-btn-secondary:hover { background: var(--color-wash, #f2f2f0); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--color-ink, #111111); outline-offset: 2px; }"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Destructive actions such as delete.",
+      "html": "<button class=\"ds-btn-danger\">Delete expense</button>",
+      "css": ".ds-btn-danger { font-family: var(--font-sans, 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif); font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; justify-content: center; border: 2px solid var(--color-danger, #c42b1c); border-radius: 0; background: #ffffff; color: var(--color-danger, #c42b1c); padding: 12px 16px; font-size: 16px; font-weight: 700; line-height: 1; cursor: pointer; transition: background-color 150ms; } .ds-btn-danger:hover { background: #fdf0ee; } .ds-btn-danger:focus-visible { outline: 2px solid var(--color-ink, #111111); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Labelled square field with 2px ink border.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-amt\">Amount</label><input id=\"ds-amt\" class=\"ds-input\" placeholder=\"0.00\" /><p class=\"ds-field-hint\">In your home currency.</p></div>",
+      "css": ".ds-field { font-family: var(--font-sans, 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif); font-variant-numeric: tabular-nums; display: grid; gap: 6px; max-width: 320px; } .ds-field-label { font-size: 14px; font-weight: 700; color: #111111; } .ds-field-hint { margin: 0; font-size: 14px; color: var(--color-muted, #5f5f5f); } .ds-input { font: inherit; font-size: 16px; color: #111111; background: #ffffff; border: 2px solid var(--color-ink, #111111); border-radius: 0; padding: 10px 12px; outline: none; } .ds-input::placeholder { color: var(--color-muted, #5f5f5f); } .ds-input:focus-visible { outline: 2px solid var(--color-ink, #111111); outline-offset: 2px; } .ds-input[aria-invalid=\"true\"] { border-color: var(--color-danger, #c42b1c); }"
+    },
+    {
+      "name": "Category Tag",
+      "kind": "chip",
+      "refersTo": "category-tag",
+      "description": "Lowercase category name printed on its own ink, like a label band.",
+      "html": "<span class=\"ds-tag\" style=\"background:#b6f23a;color:#111111\">grocery</span> <span class=\"ds-tag\" style=\"background:#6a4bd8;color:#ffffff\">bills</span> <span class=\"ds-tag\" style=\"background:#ff7a1a;color:#111111\">food</span> <span class=\"ds-tag\" style=\"background:#3b4bf5;color:#ffffff\">transport</span>",
+      "css": ".ds-tag { font-family: var(--font-sans, 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif); font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; padding: 6px 8px; font-size: 13px; font-weight: 700; line-height: 1; text-transform: lowercase; white-space: nowrap; border-radius: 0; }"
+    },
+    {
+      "name": "Story Card",
+      "kind": "card",
+      "refersTo": "story-card",
+      "description": "One fact on a flat field of a category ink; snap-scrolls sideways on phones.",
+      "html": "<div class=\"ds-stories\"><a class=\"ds-story\" href=\"#\" style=\"background:#111111;color:#ffffff\"><span class=\"ds-story-body\"><span class=\"ds-story-title\">Your September, wrapped</span><span class=\"ds-story-cap\">41 purchases</span></span></a><a class=\"ds-story\" href=\"#\" style=\"background:#b6f23a;color:#111111\"><span class=\"ds-story-tag\">grocery</span><span class=\"ds-story-body\"><span class=\"ds-story-fig\">£62.16</span><span class=\"ds-story-cap\">2 purchases · 7%</span></span></a><div class=\"ds-story ds-story-outline\"><span class=\"ds-story-body\"><span class=\"ds-story-fig\">−£40.12</span><span class=\"ds-story-cap\">less than Sep by the 7th</span></span></div></div>",
+      "css": ".ds-stories { font-family: var(--font-sans, 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif); font-variant-numeric: tabular-nums; display: flex; gap: 8px; } .ds-story { display: flex; flex-direction: column; width: 152px; height: 152px; padding: 12px; box-sizing: border-box; text-decoration: none; transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1); } a.ds-story:hover { transform: translateY(-2px); } .ds-story:focus-visible { outline: 2px solid #111111; outline-offset: 2px; } .ds-story-outline { background: #ffffff; color: #111111; box-shadow: inset 0 0 0 2px #111111; } .ds-story-tag { align-self: flex-start; background: #111111; color: #ffffff; padding: 4px 6px; font-size: 12px; font-weight: 800; line-height: 1; text-transform: lowercase; } .ds-story-body { margin-top: auto; display: grid; gap: 6px; } .ds-story-fig { font-size: 32px; font-weight: 800; line-height: 1; letter-spacing: -0.03em; } .ds-story-title { font-size: 20px; font-weight: 800; line-height: 1.05; } .ds-story-cap { font-size: 13px; font-weight: 600; }"
+    },
+    {
+      "name": "Packaging Stripe",
+      "kind": "custom",
+      "description": "The month's split by category in one 12px band; recurs at every scale.",
+      "html": "<div class=\"ds-stripe\" role=\"img\" aria-label=\"Spending by category: bills 75%, grocery 7%, health 6%, food 6%, transport 6%\"><span style=\"flex-grow:75;background:#6a4bd8\"></span><span style=\"flex-grow:7;background:#b6f23a\"></span><span style=\"flex-grow:6;background:#12a594\"></span><span style=\"flex-grow:6;background:#ff7a1a\"></span><span style=\"flex-grow:6;background:#3b4bf5\"></span></div>",
+      "css": ".ds-stripe { display: flex; gap: 1px; height: 12px; width: 100%; max-width: 360px; background: #111111; box-shadow: 0 0 0 2px #111111; } .ds-stripe > span { flex-basis: 0; }"
+    },
+    {
+      "name": "Expense Row",
+      "kind": "custom",
+      "description": "Dense row: category band, title over category name, amount right.",
+      "html": "<a class=\"ds-row\" href=\"#\"><span class=\"ds-row-band\" style=\"background:#ff7a1a\" aria-hidden=\"true\"></span><span class=\"ds-row-main\"><strong>Greggs</strong><span>Food</span></span><span class=\"ds-row-amt\">£2.27</span></a>",
+      "css": ".ds-row { font-family: var(--font-sans, 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif); font-variant-numeric: tabular-nums; display: grid; grid-template-columns: auto 1fr auto; align-items: center; column-gap: 12px; padding: 12px 16px; border-top: 1px solid var(--color-rule, #e4e4e4); color: #111111; text-decoration: none; max-width: 400px; } .ds-row:hover { background: var(--color-wash, #f2f2f0); } .ds-row:focus-visible { outline: 2px solid #111111; outline-offset: 2px; } .ds-row-band { width: 14px; height: 34px; box-shadow: 0 0 0 1px #111111; } .ds-row-main { display: grid; gap: 2px; } .ds-row-main strong { font-size: 15px; font-weight: 700; } .ds-row-main span { font-size: 13px; color: var(--color-muted, #5f5f5f); } .ds-row-amt { font-size: 16px; font-weight: 800; }"
+    },
+    {
+      "name": "Tab Bar",
+      "kind": "nav",
+      "refersTo": "tab-bar-item",
+      "description": "Phone navigation: five cells, Scan always ink-filled, active marked by a 4px ink bar.",
+      "html": "<nav class=\"ds-tabs\" aria-label=\"Main\"><a href=\"#\" class=\"ds-tab\" aria-current=\"page\"><svg aria-hidden=\"true\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z\"/></svg>Home</a><a href=\"#\" class=\"ds-tab\"><svg aria-hidden=\"true\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01\"/></svg>Activity</a><a href=\"#\" class=\"ds-tab ds-tab-scan\"><svg aria-hidden=\"true\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\"><path d=\"M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10\"/></svg>Scan</a><a href=\"#\" class=\"ds-tab\"><svg aria-hidden=\"true\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M3 3v18h18M8 17v-4M13 17V9M18 17v-7\"/></svg>Insights</a><a href=\"#\" class=\"ds-tab\"><svg aria-hidden=\"true\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1\"/></svg>Settings</a></nav>",
+      "css": ".ds-tabs { font-family: var(--font-sans, 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif); font-variant-numeric: tabular-nums; display: grid; grid-template-columns: repeat(5, 1fr); border-top: 2px solid #111111; background: #ffffff; max-width: 400px; } .ds-tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; height: 64px; font-size: 11px; font-weight: 700; color: var(--color-muted, #5f5f5f); text-decoration: none; } .ds-tab:hover { color: #111111; } .ds-tab[aria-current=\"page\"] { color: #111111; box-shadow: inset 0 4px 0 #111111; } .ds-tab-scan { background: #111111; color: #ffffff; } .ds-tab-scan:hover { color: #ffffff; } .ds-tab:focus-visible { outline: 2px solid #111111; outline-offset: -4px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Month in Colour",
+    "overview": "ExpenseIt tells a month of spending the way a year-in-review tells a year of listening: as a sequence of flat, full-colour cards, each carrying one fact in huge extrabold numerals. Underneath the stories sits an own-brand packaging system. Every category owns one flat ink, its name is printed lowercase on that ink like a supermarket label band, and the month's split appears as a single striped band that recurs at every scale.\n\nThe ground is white paper and near-black ink. Everything is square-cornered, ruled in 2px ink, and flat: no gradients, no drop shadows, no rounded cards. Density is high where the user scans (dense recent rows with thin category bands) and poster-scale where the product tells a story (the month block, story cards, the full-screen recap). Colour carries feeling and grouping, never meaning on its own: a category's name is always printed as text next to or on its ink.\n\nLight mode only for now; dark mode is unresolved. The logo is unresolved: the product is represented by the \"ExpenseIt\" wordmark set in Bricolage extrabold, tight tracking, until a mark is designed.",
+    "keyCharacteristics": [
+      "White paper, #111 ink, one flat ink per category, each paired with an on-colour at 4.5:1 or better.",
+      "Square corners everywhere; 2px ink rules define edges instead of shadows.",
+      "Bricolage Grotesque throughout, extrabold display with tracking pulled to -0.04em, tabular figures on every number.",
+      "The packaging stripe as the recurring device; story cards and the full-screen recap as the signature.",
+      "Hard cuts between colours; motion is short, eased out, and removed entirely under reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The Name-Always Rule",
+        "body": "Colour is never the only carrier of state or category. Every ink appears with the category's name in text: on the band, beside the swatch, or in the stripe's accessible label.",
+        "section": "colors"
+      },
+      {
+        "name": "The Paired Ink Rule",
+        "body": "An ink is never set with arbitrary text colour. Use the on-colour paired with it in `inks.ts`; surfaces whose on-colour is white are marked `data-surface=\"dark\"` so the focus ring flips to white.",
+        "section": "colors"
+      },
+      {
+        "name": "The No-Neighbour Rule",
+        "body": "Adjacent stories never share an ink, and the first story card never repeats the month block's ink directly above it. Where a stripe segment would vanish into its own ground, it prints as paper inside its ink rule.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tabular Rule",
+        "body": "`font-variant-numeric: tabular-nums` is set on body and inherited everywhere. Amounts are exact and line up; never switch to proportional figures for money.",
+        "section": "typography"
+      },
+      {
+        "name": "The Weight-Not-Case Rule",
+        "body": "Hierarchy comes from size and weight (800 / 700 / 600), never from uppercase or letter-spaced labels. Category names are lowercase on their bands.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-Field Rule",
+        "body": "Surfaces are printed, not lifted. If an element needs separation, give it an ink rule or a different flat field, never a shadow or gradient.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do set every category ink with its paired on-colour from `inks.ts`, and print the category's name with it.",
+      "Do draw edges with 2px ink borders or rings and keep every corner square.",
+      "Do use the packaging stripe whenever the month's split needs showing, at any scale.",
+      "Do set money in Bricolage with tabular figures; display numerals in extrabold at -0.03em to -0.04em.",
+      "Do mark ink-filled surfaces with white on-colour as `data-surface=\"dark\"` so the focus ring flips to white.",
+      "Do keep motion short and eased out (ease-out-expo), and use `transition: none` (not a short duration) under reduced motion."
+    ],
+    "donts": [
+      "Don't use drop shadows, gradients or blur for depth.",
+      "Don't round corners on cards, buttons, inputs or tags.",
+      "Don't let colour alone carry a category, state or error.",
+      "Don't use uppercase letter-spaced labels or eyebrows above headings; hierarchy is size and weight.",
+      "Don't fade between recap stories; cut hard from one ink to the next.",
+      "Don't put two stories of the same ink next to each other.",
+      "Don't ship a dark theme or a logo mark from this file; both are unresolved."
+    ]
+  }
+}

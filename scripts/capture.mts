@@ -4,9 +4,11 @@
  *
  *   pnpm capture /home /activity            → .impeccable/review/<name>-{mobile,desktop}.png
  *   pnpm capture --only mobile /home
+ *   HIDE_DEMO_NOTICE=1 pnpm capture /home   → without the demo notice
  */
 import { mkdir } from "node:fs/promises";
 import puppeteer from "puppeteer-core";
+import { DEMO_BANNER_COOKIE, DEMO_BANNER_DISMISSED } from "../src/ui/demo-banner-cookie";
 
 const BASE = process.env.CAPTURE_BASE ?? "http://localhost:3000";
 const CHROME =
@@ -36,6 +38,10 @@ try {
       return res.status;
     });
     if (status !== 200) throw new Error(`Demo sign-in failed (${status})`);
+    // HIDE_DEMO_NOTICE=1 closes the demo notice first, as a visitor would (README shots).
+    if (process.env.HIDE_DEMO_NOTICE === "1") {
+      await page.setCookie({ name: DEMO_BANNER_COOKIE, value: DEMO_BANNER_DISMISSED, url: BASE });
+    }
   }
   // `{receipt}` in a path becomes a freshly scanned sample receipt (one OCR call).
   let receiptId: string | null = null;

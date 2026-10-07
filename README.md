@@ -15,7 +15,7 @@ ExpenseIt is a personal expense tracker for students and young professionals. Ph
 
 It began as my BSc final year project, a native Android app, and has been rebuilt as a web app that runs in any browser and installs on a phone like an app.
 
-![Three phone screens: the home month block, a month recap story, and monthly budgets](docs/screenshots/phones.webp)
+![Three phone screens: the home month block, checking a scanned receipt before saving, and a month recap story](docs/screenshots/phones.webp)
 
 ## Features
 

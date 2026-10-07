@@ -55,6 +55,7 @@ Confirmed scope:
 - Accounts with sign-in, plus a one-click demo account. The demo notice can be closed, and stays closed for that demo.
 - Category suggestions for expenses and recurring payments typed in by hand: picked from the user's own history first (what they filed that title under before), then from a built-in list of common UK shops and bills. No AI, so it is instant and free; the user's own choice always wins.
 - A month picker on the month label (home and insights) to jump to any past month.
+- Anonymous visit counts with Vercel Web Analytics (no cookies; search text and record ids are stripped from URLs before sending).
 
 Constraints:
 - API keys stay on the server. No secret is ever shipped to the browser or committed to the repo.

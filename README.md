@@ -6,7 +6,7 @@
 
 <p align="center">
   Snap a receipt, see where your money goes.<br>
-  <a href="https://expenseit-rho.vercel.app"><strong>Try the live demo</strong></a>: one click, no sign-up, sample data included.
+  <a href="https://expenseit-app.vercel.app"><strong>Try the live demo</strong></a>: one click, no sign-up, sample data included.
 </p>
 
 ![The ExpenseIt landing page: a pile of receipts on the left becomes a month of colour-coded spending on the right](docs/screenshots/landing.webp)
@@ -131,6 +131,10 @@ pnpm dev                     # http://localhost:3000
 | `pnpm capture <path…>` | Screenshot pages on phone and desktop sizes, signed in as a demo user |
 
 On Vercel, deployments run `vercel-build`, which applies pending migrations before building, so the database schema always matches the code being deployed. A daily cron job (`vercel.json`) logs due recurring payments and deletes demo accounts older than a day, along with their photos.
+
+## Privacy
+
+Visits are counted with Vercel Web Analytics, which uses no cookies and records nothing that identifies a visitor. Search text and the ids of expenses and receipts are stripped from page addresses before they're sent. Demo accounts and their photos are deleted after a day, and deleting a real account removes everything, photos included.
 
 ## Credits
 

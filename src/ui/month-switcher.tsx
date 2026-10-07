@@ -3,8 +3,9 @@ import Link from "next/link";
 import { addMonths, type YearMonth } from "@/domain/dates";
 import { cn } from "./cn";
 import { formatMonth } from "./format";
+import { MonthPicker } from "./month-picker";
 
-/** Previous / current / next month, as plain links (?month=YYYY-MM). */
+/** Previous and next month as plain links (?month=YYYY-MM), with a picker on the month itself. */
 export function MonthSwitcher({
   month,
   current,
@@ -27,9 +28,7 @@ export function MonthSwitcher({
       <Link href={href(previous)} className={arrow} aria-label={`Show ${formatMonth(previous)}`}>
         <ChevronLeft aria-hidden className="size-4" strokeWidth={2.5} />
       </Link>
-      <span className={cn("flex h-9 items-center border-2 px-3 text-sm font-bold", edge)} aria-current="date">
-        {formatMonth(month)}
-      </span>
+      <MonthPicker month={month} current={current} basePath={basePath} tone={tone} />
       {next <= current ? (
         <Link href={href(next)} className={arrow} aria-label={`Show ${formatMonth(next)}`}>
           <ChevronRight aria-hidden className="size-4" strokeWidth={2.5} />

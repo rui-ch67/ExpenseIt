@@ -252,6 +252,9 @@ Blunt, heavy and square.
 - **Size:** 152px square on phones, 160px tall and fluid width on desktop; 12px padding; one fact pinned to the bottom (2rem extrabold figure, 13px semibold caption).
 - **Shadow Strategy:** none (see Elevation). Linked cards lift 2px on hover over 200ms ease-out-expo.
 
+### Category picker
+Categories as a radio group of their ink labels (lowercase, bold, square), the chosen one ringed in 2px ink with a 2px offset; "uncategorised" is a dashed ink outline. When a category is suggested for a typed title, one muted 14px line under the labels says which and why ("Suggested grocery, from your past spending."). Its space is reserved, so nothing jumps.
+
 ### Inputs / Fields
 - **Style:** 2px ink border, paper fill, square, 10px × 12px padding, 16px text, muted placeholder. Selects share the style with a 16px chevron.
 - **Label:** 14px bold above; hint 14px muted below.
@@ -261,7 +264,8 @@ Blunt, heavy and square.
 ### Navigation
 - **Phones:** fixed bottom tab bar, 64px tall, 2px ink top rule, five items with 20px icons over 11px bold labels. Inactive items muted; active ink with a 4px inset ink bar on top; Scan is always an ink-filled cell.
 - **Desktop:** 240px left rail with a 2px ink right rule, the mark and wordmark at 24px extrabold, an ink-filled "Scan a receipt" button, and items whose active state is a Highlighter Lime fill.
-- **Month switcher:** square 36px arrow cells and a bordered month label, ink or white edges to suit the ground.
+- **Month switcher:** square 36px arrow cells and a bordered month label, ink or white edges to suit the ground. The label is a button (with a chevron) that opens the month picker: a paper panel with a 2px ink border, a year row with square arrows, and a 3×4 grid of months. The shown month is ink-filled, the current month has an ink border, and future months are muted at 50%.
+- **Demo notice:** on phones, a floating ink card 8px from the top and sides with a 2px paper ring, dropping in once; on desktop, an ink strip above the content. Both close with an × and stay closed for that demo.
 
 ### Brand mark
 - **Artwork:** an ink square tile; a paper slip with a square top and a zigzag torn foot; item lines in Packet Orange, Highlighter Lime and Ultramarine (plus Bubblegum Fuchsia at large sizes) of uneven lengths, then a thicker ink total rule. Flat, square-cornered, no outline.

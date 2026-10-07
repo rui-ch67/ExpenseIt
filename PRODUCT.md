@@ -52,7 +52,9 @@ Confirmed scope:
 - Search, filters (date, category, amount) and CSV export.
 - Splitting a receipt across categories: on the receipt review screen every item starts in one category, and the user can move individual items to others. Saving creates one expense per category, all linked to the same receipt. Discounts, tax and any gap between the item sum and the receipt total are shared out in proportion to item prices, so the expenses always add up to exactly the receipt total. Receipts that aren't split behave as before: one expense.
 - Multi-currency: each user has a home currency (ISO 4217 code); expenses can be logged in any of the 30 currencies the European Central Bank publishes and are converted to the home currency at that day's reference rate (via Frankfurter).
-- Accounts with sign-in, plus a one-click demo account.
+- Accounts with sign-in, plus a one-click demo account. The demo notice can be closed, and stays closed for that demo.
+- Category suggestions for expenses and recurring payments typed in by hand: picked from the user's own history first (what they filed that title under before), then from a built-in list of common UK shops and bills. No AI, so it is instant and free; the user's own choice always wins.
+- A month picker on the month label (home and insights) to jump to any past month.
 
 Constraints:
 - API keys stay on the server. No secret is ever shipped to the browser or committed to the repo.

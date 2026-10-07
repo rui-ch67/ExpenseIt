@@ -10,8 +10,12 @@ export const metadata = { title: "Add an expense" };
 
 export default async function NewExpensePage() {
   const user = await requireUser();
-  const { categories, settings } = getServices();
-  const [list, currency] = await Promise.all([categories.list(user.id), settings.homeCurrency(user.id)]);
+  const { categories, settings, expenses } = getServices();
+  const [list, currency, habits] = await Promise.all([
+    categories.list(user.id),
+    settings.homeCurrency(user.id),
+    expenses.categoryHabits(user.id),
+  ]);
   const today = todayIn();
   return (
     <main className="mx-auto max-w-xl px-4 pb-10 lg:px-8">
@@ -20,6 +24,7 @@ export default async function NewExpensePage() {
       <ExpenseForm
         values={{ title: "", amount: "", currency, spentOn: today, categoryId: null, note: "" }}
         categories={list.map(toCategoryView)}
+        habits={habits}
         currencies={CURRENCY_CODES.map((code) => ({ code, name: CURRENCIES[code].name }))}
         today={today}
       />

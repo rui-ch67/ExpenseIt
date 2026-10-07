@@ -10,8 +10,12 @@ export const metadata = { title: "Add a recurring payment" };
 
 export default async function NewRecurringPage() {
   const user = await requireUser();
-  const { categories, settings } = getServices();
-  const [list, currency] = await Promise.all([categories.list(user.id), settings.homeCurrency(user.id)]);
+  const { categories, settings, expenses } = getServices();
+  const [list, currency, habits] = await Promise.all([
+    categories.list(user.id),
+    settings.homeCurrency(user.id),
+    expenses.categoryHabits(user.id),
+  ]);
   return (
     <main className="mx-auto max-w-xl px-4 pb-10 lg:px-8">
       <BackLink href="/recurring">Recurring</BackLink>
@@ -19,6 +23,7 @@ export default async function NewRecurringPage() {
       <RecurringForm
         values={{ title: "", amount: "", currency, frequency: "monthly", startsOn: todayIn(), endsOn: "", categoryId: null, note: "" }}
         categories={list.map(toCategoryView)}
+        habits={habits}
         currencies={CURRENCY_CODES}
       />
     </main>

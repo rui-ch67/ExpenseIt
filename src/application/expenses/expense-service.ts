@@ -1,3 +1,4 @@
+import { habitsFrom, type TitleHabit } from "@/domain/category-suggestion";
 import { parseCurrencyCode } from "@/domain/currency";
 import { parseIsoDate } from "@/domain/dates";
 import { NotFoundError, ValidationError } from "@/domain/errors";
@@ -48,6 +49,11 @@ export class ExpenseService {
     const expense = await this.expenses.findById(userId, id);
     if (!expense) throw new NotFoundError("Expense");
     return expense;
+  }
+
+  /** What the user usually files each title under, for suggesting a category as they type. */
+  async categoryHabits(userId: string): Promise<TitleHabit[]> {
+    return habitsFrom(await this.expenses.titleUses(userId, 2000));
   }
 
   async list(userId: string, query: ExpenseQuery): Promise<Page<Expense>> {

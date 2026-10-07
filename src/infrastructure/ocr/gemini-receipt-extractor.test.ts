@@ -1,5 +1,5 @@
 import { ApiError } from "@google/genai";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ServiceUnavailableError } from "@/domain/errors";
 import { firstModelThatAnswers } from "./gemini-receipt-extractor";
 
@@ -13,7 +13,12 @@ function hang(timeoutMs: number): Promise<never> {
 }
 
 describe("firstModelThatAnswers", () => {
-  afterEach(() => vi.restoreAllMocks());
+  // Fake timers (Date.now included) keep the time budget exact, however busy the machine is.
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
 
   it("moves on when a model is overloaded", async () => {
     const tried: string[] = [];
@@ -32,7 +37,7 @@ describe("firstModelThatAnswers", () => {
 
   it("moves on when a model hangs, giving each one a capped slice of time", async () => {
     const slices: number[] = [];
-    const answer = await firstModelThatAnswers(
+    const scan = firstModelThatAnswers(
       ["flash", "lite"],
       (model, timeoutMs) => {
         slices.push(timeoutMs);
@@ -40,9 +45,9 @@ describe("firstModelThatAnswers", () => {
       },
       LIMITS,
     );
-    expect(answer.model).toBe("lite");
-    expect(slices[0]).toBe(40);
-    expect(slices[1]).toBeLessThanOrEqual(60);
+    await vi.advanceTimersByTimeAsync(40);
+    expect((await scan).model).toBe("lite");
+    expect(slices).toEqual([40, 40]);
   });
 
   it("reports the service as busy once the time budget is spent", async () => {
@@ -56,7 +61,9 @@ describe("firstModelThatAnswers", () => {
       },
       LIMITS,
     );
-    await expect(scan).rejects.toBeInstanceOf(ServiceUnavailableError);
+    const busy = expect(scan).rejects.toBeInstanceOf(ServiceUnavailableError);
+    await vi.advanceTimersByTimeAsync(100);
+    await busy;
     // 40 + 40 ms used, 20 ms left for the third, nothing worth starting a fourth.
     expect(tried).toEqual(["a", "b", "c"]);
   });

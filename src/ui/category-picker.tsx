@@ -1,18 +1,30 @@
+import type { ReactNode } from "react";
 import { cn } from "./cn";
 import { inkFor } from "./inks";
 import type { CategoryView } from "./types";
 
-/** Categories as a radio group of ink labels. */
+/**
+ * Categories as a radio group of ink labels. Pass `value` and `onChange` to
+ * control the choice (for suggestions), or `defaultValue` to leave it to the form.
+ */
 export function CategoryPicker({
   name,
   categories,
-  defaultValue,
+  defaultValue = null,
+  value,
+  onChange,
   legend = "Category",
+  hint,
 }: {
   name: string;
   categories: readonly CategoryView[];
-  defaultValue: string | null;
+  defaultValue?: string | null;
+  /** The chosen category id, "" for uncategorised. */
+  value?: string;
+  onChange?: (id: string) => void;
   legend?: string;
+  /** Shown under the labels and announced politely, e.g. why one was picked. */
+  hint?: ReactNode;
 }) {
   const options = [...categories.map((c) => ({ id: c.id, name: c.name, color: c.color })), { id: "", name: "Uncategorised", color: null }];
   return (
@@ -27,7 +39,9 @@ export function CategoryPicker({
                 type="radio"
                 name={name}
                 value={option.id}
-                defaultChecked={(defaultValue ?? "") === option.id}
+                {...(value === undefined
+                  ? { defaultChecked: (defaultValue ?? "") === option.id }
+                  : { checked: value === option.id, onChange: () => onChange?.(option.id) })}
                 className="peer sr-only"
               />
               <span
@@ -42,6 +56,11 @@ export function CategoryPicker({
           );
         })}
       </div>
+      {hint !== undefined && (
+        <p className="min-h-5 text-sm text-muted" aria-live="polite">
+          {hint}
+        </p>
+      )}
     </fieldset>
   );
 }

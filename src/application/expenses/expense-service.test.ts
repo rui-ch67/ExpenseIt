@@ -179,3 +179,22 @@ describe("listing", () => {
     await expect(services.expenses.list(alice, { limit: 1000 })).rejects.toThrow("Page size");
   });
 });
+
+describe("category habits", () => {
+  it("learns what each title is usually filed under, for this user only", async () => {
+    const [food, grocery] = await services.categories.list(alice);
+    const log = (title: string, categoryId: string | null, spentOn = "2026-10-01") =>
+      services.expenses.log(alice, { title, amount: "5.00", currency: "GBP", spentOn, categoryId });
+    await log("Tesco", grocery.id);
+    await log("tesco", grocery.id, "2026-10-02");
+    await log("Tesco", food.id);
+    await log("Pret", food.id);
+    await log("Mystery", null);
+
+    expect(await services.expenses.categoryHabits(alice)).toEqual([
+      { key: "tesco", categoryId: grocery.id },
+      { key: "pret", categoryId: food.id },
+    ]);
+    expect(await services.expenses.categoryHabits(bob)).toEqual([]);
+  });
+});

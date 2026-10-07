@@ -12,6 +12,7 @@ import type {
   NewExpense,
   Page,
 } from "@/application/ports";
+import type { TitleUse } from "@/domain/category-suggestion";
 import { type CurrencyCode, parseCurrencyCode } from "@/domain/currency";
 import { firstDayOf, type IsoDate, lastDayOf, type YearMonth } from "@/domain/dates";
 import type { Expense } from "@/domain/expense";
@@ -241,6 +242,28 @@ export class DrizzleExpenseRepository implements ExpenseRepository {
       .groupBy(expenses.currency)
       .orderBy(desc(homeTotal));
     return rows.map((r) => ({ ...r, currency: parseCurrencyCode(r.currency) }));
+  }
+
+  async titleUses(userId: string, limit: number): Promise<TitleUse[]> {
+    const uses = sql<number>`count(*)`.mapWith(Number);
+    const rows = await this.db
+      .select({
+        title: expenses.title,
+        categoryId: expenses.categoryId,
+        uses,
+        lastSpentOn: sql<string>`max(${expenses.spentOn})`,
+      })
+      .from(expenses)
+      .where(and(eq(expenses.userId, userId), isNotNull(expenses.categoryId)))
+      .groupBy(expenses.title, expenses.categoryId)
+      .orderBy(desc(uses))
+      .limit(limit);
+    return rows.map((row) => ({
+      title: row.title,
+      categoryId: row.categoryId!,
+      uses: row.uses,
+      lastSpentOn: row.lastSpentOn as IsoDate,
+    }));
   }
 
   async recurringTotal(userId: string, homeCurrency: CurrencyCode, from: IsoDate, to: IsoDate): Promise<number> {

@@ -62,6 +62,10 @@
   [data-surface="dark"] :focus-visible {
     outline-color: var(--color-paper);
   }
+  /* A paper panel opened over a colour block (the month picker) goes back to ink. */
+  [data-surface="dark"] [data-surface="light"] :focus-visible {
+    outline-color: var(--color-ink);
+  }
 
   a {
     text-underline-offset: 0.2em;
@@ -115,4 +119,16 @@
 .scan-sweep {
   top: 0;
   animation: scan-sweep 1.6s var(--ease-out-expo) infinite alternate;
+}
+
+/* Demo notice on phones: drops in once from just above its resting place. */
+@keyframes drop-in {
+  from {
+    opacity: 0;
+    translate: 0 -0.75rem;
+  }
+}
+
+@utility drop-in {
+  animation: drop-in 0.45s var(--ease-out-expo) both;
 }

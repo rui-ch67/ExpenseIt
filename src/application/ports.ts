@@ -11,6 +11,7 @@
  */
 import type { Budget } from "@/domain/budget";
 import type { Category, CategoryColor } from "@/domain/category";
+import type { TitleUse } from "@/domain/category-suggestion";
 import type { CurrencyCode } from "@/domain/currency";
 import type { IsoDate, YearMonth } from "@/domain/dates";
 import type { ExchangeRate } from "@/domain/exchange-rate";
@@ -173,6 +174,9 @@ export interface ExpenseRepository {
 
   /** Home-currency total of expenses logged by recurring payments in a range. */
   recurringTotal(userId: string, homeCurrency: CurrencyCode, from: IsoDate, to: IsoDate): Promise<number>;
+
+  /** How often each title was filed under each category, most used first. */
+  titleUses(userId: string, limit: number): Promise<TitleUse[]>;
 
   /** Expenses whose home amount isn't in `homeCurrency` yet. */
   listNotInHomeCurrency(userId: string, homeCurrency: CurrencyCode): Promise<Expense[]>;

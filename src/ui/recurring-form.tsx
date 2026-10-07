@@ -3,12 +3,14 @@
 import { LoaderCircle, Pause, Play } from "lucide-react";
 import { useActionState, useState, useTransition } from "react";
 import { saveRecurring, setRecurringPaused } from "@/app/actions/recurring";
+import type { TitleHabit } from "@/domain/category-suggestion";
 import { Button } from "./button";
 import { CategoryPicker } from "./category-picker";
 import { cn } from "./cn";
 import { Field, Input, Textarea } from "./field";
 import { Select } from "./select";
 import type { CategoryView } from "./types";
+import { useCategorySuggestion } from "./use-category-suggestion";
 
 export interface RecurringFormValues {
   readonly id?: string;
@@ -32,18 +34,30 @@ export function RecurringForm({
   values,
   categories,
   currencies,
+  habits,
 }: {
   values: RecurringFormValues;
   categories: readonly CategoryView[];
   currencies: readonly string[];
+  /** The user's title → category habits; when given, a category is suggested as they type. */
+  habits?: readonly TitleHabit[];
 }) {
   const [state, action, pending] = useActionState(saveRecurring, null);
+  const category = useCategorySuggestion(categories, habits, values.categoryId);
   const error = state && !state.ok ? state.error : null;
   return (
     <form action={action} className="grid gap-5">
       {values.id && <input type="hidden" name="id" value={values.id} />}
       <Field label="What is it?" htmlFor="title">
-        <Input id="title" name="title" defaultValue={values.title} required maxLength={120} placeholder="e.g. Rent, Spotify, phone contract" />
+        <Input
+          id="title"
+          name="title"
+          defaultValue={values.title}
+          required
+          maxLength={120}
+          placeholder="e.g. Rent, Spotify, phone contract"
+          onChange={(e) => category.onTitleChange(e.target.value)}
+        />
       </Field>
       <div className="grid grid-cols-[1fr_7rem] gap-2">
         <Field label="Amount" htmlFor="amount">
@@ -80,7 +94,13 @@ export function RecurringForm({
           <Input id="endsOn" name="endsOn" type="date" defaultValue={values.endsOn} />
         </Field>
       </div>
-      <CategoryPicker name="categoryId" categories={categories} defaultValue={values.categoryId} />
+      <CategoryPicker
+        name="categoryId"
+        categories={categories}
+        value={category.categoryId}
+        onChange={category.choose}
+        hint={category.hint}
+      />
       <Field label="Note" htmlFor="note" hint="Optional. Added to every expense it logs.">
         <Textarea id="note" name="note" defaultValue={values.note} rows={2} maxLength={1000} />
       </Field>

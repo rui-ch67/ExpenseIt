@@ -124,7 +124,13 @@ export function ReceiptReview({
         </Field>
       </div>
 
-      <CategoryPickerControlled categories={categories} value={categoryId} onChange={setCategoryId} />
+      <CategoryPicker
+        name="receipt-category"
+        legend="File it under"
+        categories={categories}
+        value={categoryId ?? ""}
+        onChange={(id) => setCategoryId(id || null)}
+      />
 
       <section aria-labelledby="items-heading" className="grid gap-2">
         <div>
@@ -245,28 +251,6 @@ export function ReceiptReview({
           {parts && parts.length > 1 ? `Save as ${parts.length} expenses` : "Save expense"}
         </Button>
       </div>
-    </div>
-  );
-}
-
-/** The receipt-wide category, as a controlled radio group of ink labels. */
-function CategoryPickerControlled({
-  categories,
-  value,
-  onChange,
-}: {
-  categories: readonly CategoryView[];
-  value: string | null;
-  onChange: (id: string | null) => void;
-}) {
-  return (
-    <div
-      onChange={(e) => {
-        const target = e.target as HTMLInputElement;
-        if (target.name === "receipt-category") onChange(target.value || null);
-      }}
-    >
-      <CategoryPicker name="receipt-category" legend="File it under" categories={categories} defaultValue={value} />
     </div>
   );
 }

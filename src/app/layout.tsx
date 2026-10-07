@@ -13,6 +13,10 @@ export const metadata: Metadata = {
   title: { default: "ExpenseIt", template: "%s · ExpenseIt" },
   description: "Snap a receipt, see where your money goes.",
   applicationName: "ExpenseIt",
+  // Lets iPhones open the home-screen copy full screen, like an app.
+  appleWebApp: { capable: true, title: "ExpenseIt", statusBarStyle: "default" },
+  openGraph: { siteName: "ExpenseIt", type: "website", locale: "en_GB" },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = {

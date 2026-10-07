@@ -47,7 +47,7 @@ export function RecurringForm({
       </Field>
       <div className="grid grid-cols-[1fr_7rem] gap-2">
         <Field label="Amount" htmlFor="amount">
-          <Input id="amount" name="amount" defaultValue={values.amount} inputMode="decimal" required placeholder="0.00" className="text-xl font-extrabold" />
+          <Input id="amount" name="amount" defaultValue={values.amount} inputMode="decimal" required placeholder="0.00" className="py-2 text-xl font-extrabold" />
         </Field>
         <Field label="Currency" htmlFor="currency">
           <Select id="currency" name="currency" defaultValue={values.currency}>

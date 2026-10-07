@@ -463,7 +463,7 @@
   ],
   "narrative": {
     "northStar": "Month in Colour",
-    "overview": "ExpenseIt tells a month of spending the way a year-in-review tells a year of listening: as a sequence of flat, full-colour cards, each carrying one fact in huge extrabold numerals. Underneath the stories sits an own-brand packaging system. Every category owns one flat ink, its name is printed lowercase on that ink like a supermarket label band, and the month's split appears as a single striped band that recurs at every scale.\n\nThe ground is white paper and near-black ink. Everything is square-cornered, ruled in 2px ink, and flat: no gradients, no drop shadows, no rounded cards. Density is high where the user scans (dense recent rows with thin category bands) and poster-scale where the product tells a story (the month block, story cards, the full-screen recap). Colour carries feeling and grouping, never meaning on its own: a category's name is always printed as text next to or on its ink.\n\nLight mode only for now; dark mode is unresolved. The logo is unresolved: the product is represented by the \"ExpenseIt\" wordmark set in Bricolage extrabold, tight tracking, until a mark is designed.",
+    "overview": "ExpenseIt tells a month of spending the way a year-in-review tells a year of listening: as a sequence of flat, full-colour cards, each carrying one fact in huge extrabold numerals. Underneath the stories sits an own-brand packaging system. Every category owns one flat ink, its name is printed lowercase on that ink like a supermarket label band, and the month's split appears as a single striped band that recurs at every scale.\n\nThe ground is white paper and near-black ink. Everything is square-cornered, ruled in 2px ink, and flat: no gradients, no drop shadows, no rounded cards. Density is high where the user scans (dense recent rows with thin category bands) and poster-scale where the product tells a story (the month block, story cards, the full-screen recap). Colour carries feeling and grouping, never meaning on its own: a category's name is always printed as text next to or on its ink.\n\nLight mode only for now; dark mode is unresolved. The mark is the split receipt: a torn paper slip on an ink tile, its item lines printed in category inks above an ink total rule. It is the product in one picture (a receipt going in, colours coming out) and always sits beside the \"ExpenseIt\" wordmark in Bricolage extrabold.",
     "keyCharacteristics": [
       "White paper, #111 ink, one flat ink per category, each paired with an on-colour at 4.5:1 or better.",
       "Square corners everywhere; 2px ink rules define edges instead of shadows.",
@@ -518,7 +518,8 @@
       "Don't use uppercase letter-spaced labels or eyebrows above headings; hierarchy is size and weight.",
       "Don't fade between recap stories; cut hard from one ink to the next.",
       "Don't put two stories of the same ink next to each other.",
-      "Don't ship a dark theme or a logo mark from this file; both are unresolved."
+      "Don't ship a dark theme from this file; it is unresolved.",
+      "Don't redraw, outline, round or recolour the mark: use `BrandMark` or the files in `docs/brand/` (operating systems round the tile themselves)."
     ]
   }
 }

@@ -4,6 +4,7 @@ import { ChartColumn, House, List, ScanLine, Settings } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "./cn";
+import { Wordmark } from "./brand-mark";
 
 const ITEMS = [
   { href: "/home", label: "Home", icon: House },
@@ -66,7 +67,7 @@ export function SideRail() {
   return (
     <nav aria-label="Main" className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col border-r-2 border-ink lg:flex">
       <Link href="/home" className="px-6 pt-6 pb-8 text-2xl font-extrabold tracking-tight no-underline">
-        ExpenseIt
+        <Wordmark />
       </Link>
       <ul className="grid gap-1 px-3">
         {ITEMS.map(({ href, label, icon: Icon, ...item }) => {

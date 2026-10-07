@@ -49,7 +49,7 @@ export default async function RecurringPage() {
       ) : (
         <>
           <section aria-labelledby="cost-heading" className="border-y-2 border-ink py-6">
-            <h2 id="cost-heading" className="text-[clamp(1.75rem,6vw,2.5rem)] leading-[1.02] font-extrabold tracking-[-0.03em]">
+            <h2 id="cost-heading" className="text-[clamp(1.75rem,6vw,2.5rem)] text-balance leading-[1.02] font-extrabold tracking-[-0.03em]">
               About {perMonth.format()} a month
               <span className="text-muted"> in regular payments.</span>
             </h2>

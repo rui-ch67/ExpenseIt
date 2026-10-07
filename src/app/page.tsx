@@ -9,6 +9,7 @@ import { Compare } from "@/ui/landing/compare";
 import { MonthPanel } from "@/ui/landing/month-panel";
 import { ReceiptSlip, SLIPS } from "@/ui/landing/receipt-slip";
 import { StoryPreview } from "@/ui/landing/story-preview";
+import { Wordmark } from "@/ui/brand-mark";
 
 const GITHUB = "https://github.com/rui-ch67/ExpenseIt";
 
@@ -60,7 +61,7 @@ export default async function Landing() {
       <header className="sticky top-0 z-40 border-b-2 border-ink bg-paper">
         <nav aria-label="Main" className="mx-auto flex h-16 max-w-[90rem] items-center justify-between gap-4 px-5 lg:px-12">
           <Link href="/" className="text-2xl font-extrabold tracking-tight no-underline">
-            ExpenseIt
+            <Wordmark />
           </Link>
           <div className="flex items-center gap-6 text-base font-bold">
             <a href="#how" className="hidden no-underline hover:underline sm:inline">

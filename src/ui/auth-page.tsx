@@ -1,14 +1,15 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { DemoButton } from "./demo-button";
+import { Wordmark } from "./brand-mark";
 
 /** Shared frame for sign in and sign up: the form beside a colour block. */
 export function AuthPage({ title, children }: { title: string; children: ReactNode }) {
   return (
     <main className="grid min-h-dvh lg:grid-cols-[1fr_1.1fr]">
       <section className="flex flex-col px-5 py-6 lg:px-12 lg:py-10">
-        <Link href="/" className="text-xl font-extrabold tracking-tight no-underline">
-          ExpenseIt
+        <Link href="/" className="self-start text-xl font-extrabold tracking-tight no-underline">
+          <Wordmark />
         </Link>
         <div className="my-auto w-full max-w-sm py-10">
           <h1 className="text-4xl leading-none font-extrabold tracking-[-0.03em]">{title}</h1>

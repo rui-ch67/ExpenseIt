@@ -1,0 +1,5 @@
+{
+  "source": "html-mock",
+  "note": "No image generation in this harness. Hand-built SVG mark (Bricolage Grotesque ExtraBold outlines, DESIGN.md inks) shown on a 1440x900 presentation board: hero, phone home screens (rounded and circular masks), browser tab, 16 to 64px, side rail and phone header lockups. Rendered with headless Chrome.",
+  "prompt": "ExpenseIt brand mark candidate: own-brand-label"
+}

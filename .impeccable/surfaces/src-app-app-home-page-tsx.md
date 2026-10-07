@@ -19,7 +19,7 @@ Chosen direction: Month in Colour home with Own-Brand colour bands (user chose f
 
 Memorable moment: the month recap, a full-screen tap-through of story cards in category inks.
 
-Unresolved: whether dark mode ships in v2; the replacement logo mark (the user asked for a new one; wordmark only until designed).
+Unresolved: whether dark mode ships in v2. The mark (the split receipt) is resolved and sits beside the wordmark in the month block.
 
 Deferred (recorded after the first finish review): the alert band in FIRST VIEWPORT depends on budgets, which are Phase 4 scope in PRODUCT.md; until then the band has nothing true to say and is not shown. Adaptations: on desktop the story row shows four cards (extra cards stay on the phone's swipe rail); the top category gets no story card of its own because the colour block above already states it, which also keeps the first card from repeating the block's ink.
 

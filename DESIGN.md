@@ -150,7 +150,7 @@ ExpenseIt tells a month of spending the way a year-in-review tells a year of lis
 
 The ground is white paper and near-black ink. Everything is square-cornered, ruled in 2px ink, and flat: no gradients, no drop shadows, no rounded cards. Density is high where the user scans (dense recent rows with thin category bands) and poster-scale where the product tells a story (the month block, story cards, the full-screen recap). Colour carries feeling and grouping, never meaning on its own: a category's name is always printed as text next to or on its ink.
 
-Light mode only for now; dark mode is unresolved. The logo is unresolved: the product is represented by the "ExpenseIt" wordmark set in Bricolage extrabold, tight tracking, until a mark is designed.
+Light mode only for now; dark mode is unresolved. The mark is **the split receipt**: a torn paper slip on an ink tile, its item lines printed in category inks above an ink total rule. It is the product in one picture (a receipt going in, colours coming out) and always sits beside the "ExpenseIt" wordmark in Bricolage extrabold.
 
 **Key Characteristics:**
 - White paper, #111 ink, one flat ink per category, each paired with an on-colour at 4.5:1 or better.
@@ -260,8 +260,13 @@ Blunt, heavy and square.
 
 ### Navigation
 - **Phones:** fixed bottom tab bar, 64px tall, 2px ink top rule, five items with 20px icons over 11px bold labels. Inactive items muted; active ink with a 4px inset ink bar on top; Scan is always an ink-filled cell.
-- **Desktop:** 240px left rail with a 2px ink right rule, the wordmark at 24px extrabold, an ink-filled "Scan a receipt" button, and items whose active state is a Highlighter Lime fill.
+- **Desktop:** 240px left rail with a 2px ink right rule, the mark and wordmark at 24px extrabold, an ink-filled "Scan a receipt" button, and items whose active state is a Highlighter Lime fill.
 - **Month switcher:** square 36px arrow cells and a bordered month label, ink or white edges to suit the ground.
+
+### Brand mark
+- **Artwork:** an ink square tile; a paper slip with a square top and a zigzag torn foot; item lines in Packet Orange, Highlighter Lime and Ultramarine (plus Bubblegum Fuchsia at large sizes) of uneven lengths, then a thicker ink total rule. Flat, square-cornered, no outline.
+- **Lockup:** `<Wordmark />` in `src/ui/brand-mark.tsx`: the mark at 1.2em beside the name, 0.4em apart, sized by the surrounding font (24px in the side rail and landing header, 20px on sign-in, 18px over the phone month block).
+- **Sources:** `docs/brand/expenseit-mark.svg` (home-screen icons), `expenseit-mark-small.svg` (fewer, thicker lines for 16 to 48px and the lockup) and `expenseit-mark-maskable.svg` (scaled into Android's safe zone). `pnpm icons` regenerates the favicon, app icons and Apple touch icon from them; the share card (`src/app/opengraph-image.tsx`) puts the full mark beside the name, the tagline and the packaging stripe.
 
 ### Expense rows
 Dense rows: a 14×34px category band with 1px ink ring, a 15px bold title over the category name in 13px muted text, and the amount right-aligned in extrabold. 1px hairline between rows; Wash on hover. Rows group under 13px bold day headings with the day total in muted text.
@@ -289,4 +294,5 @@ The home total renders its final value immediately, then counts up once per sess
 - **Don't** use uppercase letter-spaced labels or eyebrows above headings; hierarchy is size and weight.
 - **Don't** fade between recap stories; cut hard from one ink to the next.
 - **Don't** put two stories of the same ink next to each other.
-- **Don't** ship a dark theme or a logo mark from this file; both are unresolved.
+- **Don't** ship a dark theme from this file; it is unresolved.
+- **Don't** redraw, outline, round or recolour the mark: use `BrandMark` or the files in `docs/brand/` (operating systems round the tile themselves).

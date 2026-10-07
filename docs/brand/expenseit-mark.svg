@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <title>ExpenseIt</title>
+  <!-- The split receipt: a torn paper slip whose item lines are printed in category inks. -->
+  <rect width="512" height="512" fill="#111111"/>
+  <polygon fill="#ffffff" points="136,72 376,72 376,404 356,436 336,404 316,436 296,404 276,436 256,404 236,436 216,404 196,436 176,404 156,436 136,404"/>
+  <rect x="168" y="112" width="176" height="28" fill="#ff7a1a"/>
+  <rect x="168" y="160" width="120" height="28" fill="#b6f23a"/>
+  <rect x="168" y="208" width="148" height="28" fill="#3b4bf5"/>
+  <rect x="168" y="256" width="96" height="28" fill="#ff3d8b"/>
+  <rect x="168" y="316" width="176" height="14" fill="#111111"/>
+</svg>

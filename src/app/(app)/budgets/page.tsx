@@ -50,7 +50,7 @@ export default async function BudgetsPage() {
 
       {overall && overview.overall && (
         <section aria-labelledby="overall-heading" className="grid gap-3 border-y-2 border-ink py-6">
-          <h2 id="overall-heading" className="text-[clamp(1.75rem,6vw,2.5rem)] leading-[1.02] font-extrabold tracking-[-0.03em]">
+          <h2 id="overall-heading" className="text-[clamp(1.75rem,6vw,2.5rem)] text-balance leading-[1.02] font-extrabold tracking-[-0.03em]">
             {overall.spentText} of {overall.amountText}
             <span className="text-muted"> spent this month.</span>
           </h2>

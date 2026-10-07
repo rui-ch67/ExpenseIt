@@ -56,7 +56,7 @@ export default async function InsightsPage({ searchParams }: PageProps<"/insight
       </header>
 
       <section aria-labelledby="month-heading" className="grid gap-4 border-y-2 border-ink py-6">
-        <h2 id="month-heading" className="max-w-3xl text-[clamp(1.75rem,6vw,3rem)] leading-[1.02] font-extrabold tracking-[-0.03em]">
+        <h2 id="month-heading" className="max-w-3xl text-[clamp(1.75rem,6vw,3rem)] text-balance leading-[1.02] font-extrabold tracking-[-0.03em]">
           {summary.total.format()} {isCurrent ? `in ${monthName} so far` : `in ${formatMonth(month)}`}
           {diff && (
             <span className="text-muted">

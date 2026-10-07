@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <title>ExpenseIt</title>
+  <!-- The split receipt, simplified for 16 to 48px: fewer, thicker lines and bigger teeth. -->
+  <rect width="512" height="512" fill="#111111"/>
+  <polygon fill="#ffffff" points="120,56 392,56 392,400 358,440 324,400 290,440 256,400 222,440 188,400 154,440 120,400"/>
+  <rect x="156" y="100" width="200" height="48" fill="#ff7a1a"/>
+  <rect x="156" y="172" width="136" height="48" fill="#b6f23a"/>
+  <rect x="156" y="244" width="168" height="48" fill="#3b4bf5"/>
+  <rect x="156" y="324" width="200" height="28" fill="#111111"/>
+</svg>

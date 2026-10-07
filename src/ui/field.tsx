@@ -20,7 +20,7 @@ export function Field({
   className?: string;
 }) {
   return (
-    <div className={cn("grid gap-1.5", className)}>
+    <div className={cn("grid content-start gap-1.5", className)}>
       <label htmlFor={htmlFor} className="text-sm font-bold">
         {label}
       </label>

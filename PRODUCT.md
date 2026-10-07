@@ -66,7 +66,7 @@ Not yet decided:
 ## Brand Commitments
 
 - The product name is **ExpenseIt**.
-- The v1 logo (a wallet with a coin) is kept at `docs/brand/expenseit-logo-v1.svg`, converted from the Android project. Whether it stays is undecided.
+- The mark is the split receipt (a torn receipt whose item lines are printed in category inks), chosen in October 2026 to replace the v1 wallet-and-coin logo. Sources live in `docs/brand/`; the v1 logo is kept there as `expenseit-logo-v1.svg` for history only.
 - The old Android colour scheme and typography are not binding. The visual identity is being redesigned.
 
 ## Evidence on Hand

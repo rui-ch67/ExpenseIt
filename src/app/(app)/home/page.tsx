@@ -25,6 +25,7 @@ import { inkFor } from "@/ui/inks";
 import { MonthSwitcher } from "@/ui/month-switcher";
 import { PackagingStripe } from "@/ui/packaging-stripe";
 import { StoryCard, StoryRail } from "@/ui/story-cards";
+import { Wordmark } from "@/ui/brand-mark";
 
 export const metadata = { title: "Home" };
 
@@ -131,7 +132,9 @@ function MonthBlock({
       className={cn("px-4 pt-4 pb-5 lg:px-8 lg:pt-6 lg:pb-7", ink.bg, ink.text)}
     >
       <div className="flex items-center justify-between gap-4">
-        <span className="text-lg font-extrabold tracking-tight lg:invisible">ExpenseIt</span>
+        <span className="text-lg font-extrabold tracking-tight lg:invisible">
+          <Wordmark />
+        </span>
         <MonthSwitcher month={month} current={current} basePath="/home" tone={onDark ? "white" : "ink"} />
       </div>
       <h1 className="mt-7 lg:mt-10">

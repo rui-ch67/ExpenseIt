@@ -16,7 +16,8 @@
     "vercel-build": "drizzle-kit migrate && next build",
     "ocr:try": "tsx --tsconfig tsconfig.json scripts/try-receipt-ocr.mts",
     "smoke:receipts": "tsx --tsconfig tsconfig.json scripts/smoke-receipts.mts",
-    "capture": "tsx scripts/capture.mts"
+    "capture": "tsx scripts/capture.mts",
+    "icons": "tsx scripts/build-icons.mts"
   },
   "dependencies": {
     "@google/genai": "^2.27.0",
@@ -30,6 +31,7 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "server-only": "^0.0.1",
+    "tailwind-merge": "^3.7.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {
@@ -43,6 +45,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
     "puppeteer-core": "^25.12.0",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5",

@@ -49,7 +49,7 @@ export function ExpenseForm({
             autoComplete="off"
             required
             placeholder="0.00"
-            className="text-xl font-extrabold"
+            className="py-2 text-xl font-extrabold"
           />
         </Field>
         <Field label="Currency" htmlFor="currency">

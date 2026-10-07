@@ -11,6 +11,8 @@ import { createServices, type Services } from "./container";
 import { cleanupDemoAccounts } from "./demo-cleanup";
 
 const baseURL = "http://localhost:3000";
+/** How the Google callback describes a new user to Better Auth. */
+const GOOGLE = { method: "oauth", oauth: { providerId: "google" } } as const;
 let db: Database;
 let services: Services;
 let auth: Auth;
@@ -25,6 +27,7 @@ beforeEach(async () => {
     secret: "test-secret-that-is-long-enough-for-better-auth",
     baseURL,
     rateLimit: true,
+    google: { clientId: "test-client-id", clientSecret: "test-client-secret" },
     onUserCreated: (user) => services.accountSetup.setUp(user),
   });
 });
@@ -40,29 +43,34 @@ function post(path: string, body: unknown = {}, ip = "203.0.113.7") {
   );
 }
 
-describe("email sign-up", () => {
-  it("creates the account with settings and starter categories", async () => {
-    const response = await post("/sign-up/email", {
-      name: "Rui",
-      email: "rui@example.test",
-      password: "correct horse battery",
-    });
+describe("Google sign-in", () => {
+  it("sends the visitor to Google", async () => {
+    const response = await post("/sign-in/social", { provider: "google", callbackURL: "/home" });
     expect(response.status).toBe(200);
-    expect(response.headers.get("set-cookie")).toContain("session_token");
+    const { url } = (await response.json()) as { url: string };
+    expect(new URL(url).host).toBe("accounts.google.com");
+    expect(new URL(url).searchParams.get("redirect_uri")).toBe(`${baseURL}/api/auth/callback/google`);
+  });
 
-    const { user } = (await response.json()) as { user: { id: string } };
+  it("sets up a new account the first time someone signs in", async () => {
+    // What the Google callback does for a new visitor, minus the trip to Google.
+    const context = await auth.$context;
+    const user = await context.internalAdapter.createUser(
+      { name: "Rui", email: "rui@example.test", emailVerified: true },
+      GOOGLE,
+    );
     expect((await services.settings.get(user.id)).homeCurrency).toBe("GBP");
     expect(await services.categories.list(user.id)).toHaveLength(9);
     expect((await services.expenses.list(user.id, { limit: 1 })).items).toHaveLength(0);
   });
 
-  it("rejects short passwords", async () => {
+  it("no longer accepts email and password", async () => {
     const response = await post("/sign-up/email", {
       name: "Rui",
       email: "rui@example.test",
-      password: "short",
+      password: "correct horse battery",
     });
-    expect(response.status).toBe(400);
+    expect(response.status).not.toBe(200);
   });
 });
 
@@ -93,9 +101,12 @@ describe("Try the demo", () => {
 
   it("deletes demo accounts after a day, and only demo accounts", async () => {
     const demo = (await (await post("/sign-in/anonymous")).json()) as { user: { id: string } };
-    const real = (await (
-      await post("/sign-up/email", { name: "R", email: "r@example.test", password: "long enough pw" })
-    ).json()) as { user: { id: string } };
+    const real = {
+      user: await (await auth.$context).internalAdapter.createUser(
+        { name: "R", email: "r@example.test", emailVerified: true },
+        GOOGLE,
+      ),
+    };
 
     const images = new MemoryImageStore();
     const photo = { bytes: TINY_JPEG, contentType: "image/jpeg" } as const;

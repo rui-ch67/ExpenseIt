@@ -98,7 +98,7 @@ export default async function Landing() {
               <div className="mt-7 flex flex-wrap items-start gap-3">
                 <DemoButton />
                 {!user && (
-                  <ButtonLink href="/sign-up" variant="secondary">
+                  <ButtonLink href="/sign-in" variant="secondary">
                     Create an account
                   </ButtonLink>
                 )}
@@ -264,7 +264,7 @@ export default async function Landing() {
             <div className="flex flex-wrap items-start gap-3">
               <DemoButton />
               {!user && (
-                <ButtonLink href="/sign-up" variant="secondary" className="bg-transparent hover:bg-white/40">
+                <ButtonLink href="/sign-in" variant="secondary" className="bg-transparent hover:bg-white/40">
                   Create an account
                   <ArrowRight aria-hidden className="size-5" strokeWidth={2.5} />
                 </ButtonLink>

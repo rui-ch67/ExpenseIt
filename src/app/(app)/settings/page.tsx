@@ -32,7 +32,7 @@ export default async function SettingsPage() {
             </p>
           )}
           <div className="flex flex-wrap gap-2">
-            {user.isDemo && <ButtonLink href="/sign-up">Create an account</ButtonLink>}
+            {user.isDemo && <ButtonLink href="/sign-in">Create an account</ButtonLink>}
             <SignOutButton />
           </div>
         </Section>

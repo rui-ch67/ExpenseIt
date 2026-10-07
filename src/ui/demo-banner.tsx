@@ -31,7 +31,7 @@ export function DemoBanner() {
             <strong className="font-bold">Demo account.</strong> The spending here is sample data, and it resets
             after a day.
           </span>
-          <Link href="/sign-up" className="font-bold text-cat-lime">
+          <Link href="/sign-in" className="font-bold text-cat-lime">
             Create your own account
           </Link>
         </p>

@@ -28,6 +28,7 @@ It began as my BSc final year project, a native Android app, and has been rebuil
 - **Multi-currency.** Log spending in any of the 30 currencies the European Central Bank publishes. Each expense is converted at that day's rate, and changing your home currency re-converts the history.
 - **Search, filters and CSV export.** Deleting your account deletes everything, including stored photos.
 - **Installable.** A web app manifest, app icons and home-screen shortcuts for Scan and Add.
+- **Sign in with Google**, or try the demo with no account at all.
 
 ![Insights on desktop: the month so far against last month, the category split, and the last six months](docs/screenshots/insights-desktop.webp)
 
@@ -45,7 +46,7 @@ Three things prompted the rebuild: the Azure key expired, the app only ran on An
 | Receipt reading | Azure Document Intelligence, key bundled in the app | Google Gemini on the server, with fallback across three models |
 | Photos | Firebase Storage, never deleted | Private Vercel Blob, served only to their owner, deleted with the receipt |
 | Structure | MVVM, repositories, Hilt modules | Domain, application and infrastructure layers; a composition root plays Hilt's role |
-| Accounts | None (data on one phone) | Email and password, plus a one-click demo |
+| Accounts | None (data on one phone) | Sign in with Google, plus a one-click demo |
 
 Version 2 also fixes v1 bugs: deleting a category no longer deletes its expenses, editing an expense keeps its receipt, and migrations are generated from the schema instead of hand-written with a destructive fallback. Rescanning and splitting receipts, both unfinished TODOs in v1, now work.
 
@@ -117,6 +118,8 @@ pnpm db:migrate              # create the tables in your database
 pnpm dev                     # http://localhost:3000
 ```
 
+The demo works without any accounts set up. Google sign-in needs an OAuth client, and error reports need a Sentry DSN; `.env.example` says where to get both.
+
 | Script | What it does |
 | --- | --- |
 | `pnpm dev` | Start the development server |
@@ -134,7 +137,7 @@ On Vercel, deployments run `vercel-build`, which applies pending migrations befo
 
 ## Privacy
 
-Visits are counted with Vercel Web Analytics, which uses no cookies and records nothing that identifies a visitor. Search text and the ids of expenses and receipts are stripped from page addresses before they're sent. Demo accounts and their photos are deleted after a day, and deleting a real account removes everything, photos included.
+Visits are counted with Vercel Web Analytics, which uses no cookies and records nothing that identifies a visitor. Crashes are reported to Sentry (errors only, no tracing or session replays, no IP addresses or cookies). Search text and the ids of expenses and receipts are stripped from page addresses before they're sent. Demo accounts and their photos are deleted after a day, and deleting a real account removes everything, photos included.
 
 ## Credits
 

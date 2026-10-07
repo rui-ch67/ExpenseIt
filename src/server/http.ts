@@ -1,5 +1,6 @@
 import "server-only";
 import { DomainError } from "@/domain/errors";
+import { reportError } from "./report-error";
 
 const STATUS: Record<DomainError["code"], number> = {
   validation: 400,
@@ -14,7 +15,7 @@ export function errorResponse(error: unknown): Response {
   if (error instanceof DomainError) {
     return Response.json({ error: error.message, code: error.code }, { status: STATUS[error.code] });
   }
-  console.error(error);
+  reportError(error);
   return Response.json(
     { error: "Something went wrong on our side. Please try again.", code: "internal" },
     { status: 500 },

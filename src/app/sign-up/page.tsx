@@ -1,16 +1,6 @@
-import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/server/session";
-import { AuthForm } from "@/ui/auth-form";
-import { AuthPage } from "@/ui/auth-page";
+import { permanentRedirect } from "next/navigation";
 
-export const metadata = { title: "Create an account" };
-
-export default async function SignUpPage() {
-  const user = await getCurrentUser();
-  if (user && !user.isDemo) redirect("/home");
-  return (
-    <AuthPage title="Start tracking">
-      <AuthForm mode="sign-up" />
-    </AuthPage>
-  );
+/** Accounts are created by signing in with Google, so the old address goes there. */
+export default function SignUpPage() {
+  permanentRedirect("/sign-in");
 }

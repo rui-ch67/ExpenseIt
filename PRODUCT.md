@@ -13,7 +13,8 @@ Mobile-first, installable as a PWA so it behaves like an app on a phone, and ful
 - Next.js + TypeScript, deployed on Vercel.
 - Neon Postgres for data (scales to zero when idle, wakes on the next request, so the portfolio link always works).
 - Vercel Blob for receipt images (1 GB on the free plan).
-- Authentication inside the app with Better Auth: email and password, plus an anonymous one-click demo account.
+- Authentication inside the app with Better Auth: Google sign-in (so Google verifies emails and handles passwords), plus an anonymous one-click demo account.
+- Errors reported to Sentry (free plan, errors only); visits counted with Vercel Web Analytics.
 - Receipt OCR: Google Gemini on the free AI Studio tier (3.5 Flash, falling back to 3.1 Flash-Lite and 3.5 Flash-Lite), called only from the server and behind a provider interface so it can be swapped.
 
 Every service must stay on a free tier. Scale is not a goal.
@@ -52,7 +53,7 @@ Confirmed scope:
 - Search, filters (date, category, amount) and CSV export.
 - Splitting a receipt across categories: on the receipt review screen every item starts in one category, and the user can move individual items to others. Saving creates one expense per category, all linked to the same receipt. Discounts, tax and any gap between the item sum and the receipt total are shared out in proportion to item prices, so the expenses always add up to exactly the receipt total. Receipts that aren't split behave as before: one expense.
 - Multi-currency: each user has a home currency (ISO 4217 code); expenses can be logged in any of the 30 currencies the European Central Bank publishes and are converted to the home currency at that day's reference rate (via Frankfurter).
-- Accounts with sign-in, plus a one-click demo account. The demo notice can be closed, and stays closed for that demo.
+- Accounts through Google sign-in, plus a one-click demo account. The demo notice can be closed, and stays closed for that demo.
 - Category suggestions for expenses and recurring payments typed in by hand: picked from the user's own history first (what they filed that title under before), then from a built-in list of common UK shops and bills. No AI, so it is instant and free; the user's own choice always wins.
 - A month picker on the month label (home and insights) to jump to any past month.
 - Anonymous visit counts with Vercel Web Analytics (no cookies; search text and record ids are stripped from URLs before sending).
@@ -62,9 +63,6 @@ Constraints:
 - Money is handled as exact decimals, never floating point.
 - The Gemini free tier has a small daily quota, so scanning must be rate-limited, especially for the shared demo account.
 - Code follows SOLID principles and stays easy to read. Keep the original Kotlin design (MVVM, repositories, dependency injection) as the conceptual model where it still fits.
-
-Not yet decided:
-- Whether to add Google sign-in alongside email and password.
 
 ## Brand Commitments
 

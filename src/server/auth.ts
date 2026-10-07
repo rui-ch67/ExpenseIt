@@ -1,6 +1,7 @@
 /**
  * Sign-in, powered by Better Auth.
- * - Email and password accounts.
+ * - Google accounts. Google confirms the email address and looks after the
+ *   password, so there are no passwords, resets or verification emails here.
  * - "Try the demo": an anonymous account, created in one click and filled
  *   with sample data, so visitors never have to sign up. Demo accounts are
  *   deleted after a day by the cleanup job (see cleanupDemoAccounts).
@@ -19,6 +20,8 @@ export interface AuthOptions {
   readonly baseURL?: string;
   /** Defaults to on in production only, so local development isn't throttled. */
   readonly rateLimit?: boolean;
+  /** Google OAuth client. Without it, only the demo is available. */
+  readonly google?: { readonly clientId: string; readonly clientSecret: string };
 }
 
 function trustedOrigins(): string[] {
@@ -37,11 +40,18 @@ export function createAuth(db: Database, options: AuthOptions) {
       usePlural: true,
       schema: { users, sessions, accounts, verifications, rateLimits },
     }),
-    emailAndPassword: {
-      enabled: true,
-      minPasswordLength: 8,
-      maxPasswordLength: 128,
-      autoSignIn: true,
+    emailAndPassword: { enabled: false },
+    socialProviders: options.google
+      ? { google: { ...options.google, prompt: "select_account" } }
+      : {},
+    account: {
+      accountLinking: {
+        trustedProviders: ["google"],
+        // Accounts made before Google sign-in (email and password, never
+        // verified) are claimed by signing in with Google at the same address.
+        // Safe because password sign-in is off, so nobody else can still use them.
+        requireLocalEmailVerified: false,
+      },
     },
     session: {
       // Avoids a database round trip on every request for 5 minutes.
@@ -54,8 +64,7 @@ export function createAuth(db: Database, options: AuthOptions) {
       customRules: {
         // Each demo creates a seeded account, so cap them per visitor.
         "/sign-in/anonymous": { window: 60 * 60, max: 5 },
-        "/sign-in/email": { window: 60, max: 5 },
-        "/sign-up/email": { window: 60 * 60, max: 5 },
+        "/sign-in/social": { window: 60, max: 10 },
       },
     },
     databaseHooks: {
@@ -71,6 +80,9 @@ export function createAuth(db: Database, options: AuthOptions) {
       anonymous({
         emailDomainName: "demo.expenseit.invalid",
         generateName: () => "Demo visitor",
+        // When a demo visitor signs in with Google, the demo account is left
+        // for the daily cleanup, which also deletes its receipt photos.
+        disableDeleteAnonymousUser: true,
       }),
       // Must be last: lets server actions set the session cookie.
       nextCookies(),

@@ -1,0 +1,5 @@
+{
+  "source": "html-mock",
+  "note": "No image generation in this harness. Hand-built HTML mock of the landing page first viewport at 1440x900 in the established ExpenseIt world, rendered with headless Chrome.",
+  "prompt": "ExpenseIt landing page, month-hero structure: real copy, sample-receipt numbers (Harbour Street Grocer £24.11; split grocery £13.66 + home £10.45), demo month £838.41, Try the demo primary action."
+}

@@ -5,5 +5,20 @@
       "maxFindings": 5,
       "maxChars": 8000
     }
+  },
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font-size",
+        "value": "*",
+        "files": [
+          "src/ui/landing/receipt-slip.tsx"
+        ],
+        "createdAt": "2026-10-07T13:01:57.398Z",
+        "reason": "Agent: receipt slips are aria-hidden illustration set in the receipt face at miniature scale on phones; their sizes are the illustration's, not the UI type ramp"
+      }
+    ]
   }
 }

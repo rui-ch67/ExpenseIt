@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* Placeholder theme. The real design system replaces this in Phase 3. */
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+}

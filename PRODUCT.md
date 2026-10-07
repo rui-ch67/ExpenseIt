@@ -14,7 +14,7 @@ Mobile-first, installable as a PWA so it behaves like an app on a phone, and ful
 - Neon Postgres for data (scales to zero when idle, wakes on the next request, so the portfolio link always works).
 - Vercel Blob for receipt images (1 GB on the free plan).
 - Authentication inside the app with Better Auth: Google sign-in (so Google verifies emails and handles passwords), plus an anonymous one-click demo account.
-- Errors reported to Sentry (free plan, errors only); visits counted with Vercel Web Analytics.
+- Visits counted with Vercel Web Analytics. Sentry error reporting (free plan, errors only) is wired in but off until a DSN is set.
 - Receipt OCR: Google Gemini on the free AI Studio tier (3.5 Flash, falling back to 3.1 Flash-Lite and 3.5 Flash-Lite), called only from the server and behind a provider interface so it can be swapped.
 
 Every service must stay on a free tier. Scale is not a goal.

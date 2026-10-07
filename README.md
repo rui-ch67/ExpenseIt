@@ -137,7 +137,7 @@ On Vercel, deployments run `vercel-build`, which applies pending migrations befo
 
 ## Privacy
 
-Visits are counted with Vercel Web Analytics, which uses no cookies and records nothing that identifies a visitor. Crashes are reported to Sentry (errors only, no tracing or session replays, no IP addresses or cookies). Search text and the ids of expenses and receipts are stripped from page addresses before they're sent. Demo accounts and their photos are deleted after a day, and deleting a real account removes everything, photos included.
+Visits are counted with Vercel Web Analytics, which uses no cookies and records nothing that identifies a visitor. Crash reporting with Sentry is built in and switches on once a Sentry DSN is configured (errors only: no tracing, session replays, IP addresses or cookies). Search text and the ids of expenses and receipts are stripped from page addresses before they're sent. Demo accounts and their photos are deleted after a day, and deleting a real account removes everything, photos included.
 
 ## Credits
 

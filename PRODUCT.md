@@ -14,7 +14,7 @@ Mobile-first, installable as a PWA so it behaves like an app on a phone, and ful
 - Neon Postgres for data (scales to zero when idle, wakes on the next request, so the portfolio link always works).
 - Vercel Blob for receipt images (1 GB on the free plan).
 - Authentication inside the app (Auth.js or Better Auth; library not yet chosen).
-- Receipt OCR: Google Gemini Flash on the free AI Studio tier, called only from the server and behind a provider interface so it can be swapped.
+- Receipt OCR: Google Gemini on the free AI Studio tier (3.5 Flash, falling back to 3.1 Flash-Lite and 3.5 Flash-Lite), called only from the server and behind a provider interface so it can be swapped.
 
 Every service must stay on a free tier. Scale is not a goal.
 
@@ -72,7 +72,8 @@ Not yet decided:
 
 ## Evidence on Hand
 
-- The original Android source, its unit and integration tests, and test reports in the repository.
+- The original Android source, its tests and test reports (git tag `v1-android-fyp`).
+- A synthetic test receipt (`src/test/fixtures/receipt-grocer.jpg`, fictional shop) that every configured Gemini model reads perfectly. It can double as the demo's "try a sample receipt" image.
 - No real users, testimonials, usage statistics, or press. Do not invent any. Demo data must be clearly sample data.
 
 ## Product Principles

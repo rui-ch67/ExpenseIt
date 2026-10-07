@@ -139,3 +139,14 @@ export const exchangeRates = pgTable(
   },
   (t) => [primaryKey({ columns: [t.base, t.quote, t.requestedOn] })],
 );
+
+/** Daily counters behind the scan limits (one row per key per day). */
+export const usageCounters = pgTable(
+  "usage_counters",
+  {
+    key: varchar("key", { length: 100 }).notNull(),
+    day: date("day", { mode: "string" }).notNull(),
+    count: integer("count").notNull().default(0),
+  },
+  (t) => [primaryKey({ columns: [t.key, t.day] })],
+);

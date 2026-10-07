@@ -62,6 +62,22 @@ export class ExpenseService {
     return this.expenses.create({ userId, ...(await this.prepare(userId, input)) });
   }
 
+  /**
+   * Logs several expenses in one insert: either all are saved or none are.
+   * Every input is validated and converted before anything is written.
+   */
+  async logMany(userId: string, inputs: readonly ExpenseInput[]): Promise<Expense[]> {
+    const prepared: NewExpense[] = [];
+    for (const input of inputs) {
+      prepared.push({ userId, ...(await this.prepare(userId, input)) });
+    }
+    return this.expenses.createMany(prepared);
+  }
+
+  listForReceipt(userId: string, receiptId: string): Promise<Expense[]> {
+    return this.expenses.listByReceipt(userId, receiptId);
+  }
+
   async update(userId: string, id: string, input: ExpenseInput): Promise<Expense> {
     const existing = await this.get(userId, id);
     // Keep the receipt link unless the caller explicitly changes it.

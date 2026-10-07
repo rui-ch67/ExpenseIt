@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1300" viewBox="0 0 900 1300">
+  <rect width="900" height="1300" fill="#8a8580"/>
+  <g transform="translate(450 650) rotate(-4) translate(-280 -600)" font-family="Courier New, monospace" fill="#1f1f1f">
+    <rect width="560" height="1200" fill="#f7f4ec"/>
+    <text x="280" y="70" font-size="30" font-weight="bold" text-anchor="middle">HARBOUR STREET GROCER</text>
+    <text x="280" y="105" font-size="18" text-anchor="middle">12 Harbour Street, Portsmouth PO1 2AB</text>
+    <text x="280" y="130" font-size="18" text-anchor="middle">VAT No. GB 123 4567 89</text>
+    <text x="30" y="180" font-size="19">Date: 14/09/2026     Time: 18:42</text>
+    <text x="30" y="205" font-size="19">Till 03   Op: SAM   Rcpt 004417</text>
+    <line x1="30" y1="225" x2="530" y2="225" stroke="#1f1f1f" stroke-dasharray="6 4"/>
+    <g font-size="21">
+      <text x="30" y="265">SOURDOUGH LOAF</text><text x="530" y="265" text-anchor="end">2.40</text>
+      <text x="30" y="300">SEMI SKIMMED MILK 2PT</text><text x="530" y="300" text-anchor="end">1.25</text>
+      <text x="30" y="335">FREE RANGE EGGS X12</text><text x="530" y="335" text-anchor="end">3.10</text>
+      <text x="30" y="370">BANANAS LOOSE</text>
+      <text x="50" y="398" font-size="18">0.845 kg @ 0.90/kg</text><text x="530" y="398" text-anchor="end">0.76</text>
+      <text x="30" y="433">2 X CHEDDAR 400G</text>
+      <text x="50" y="461" font-size="18">2 @ 3.50</text><text x="530" y="461" text-anchor="end">7.00</text>
+      <text x="30" y="496">MULTIBUY SAVING</text><text x="530" y="496" text-anchor="end">-1.50</text>
+      <text x="30" y="531">THICK BLEACH 750ML</text><text x="530" y="531" text-anchor="end">1.15</text>
+      <text x="30" y="566">KITCHEN ROLL 4PK</text><text x="530" y="566" text-anchor="end">4.20</text>
+      <text x="30" y="601">DISHWASHER TABS 30</text><text x="530" y="601" text-anchor="end">5.75</text>
+    </g>
+    <line x1="30" y1="625" x2="530" y2="625" stroke="#1f1f1f" stroke-dasharray="6 4"/>
+    <text x="30" y="660" font-size="20">8 ITEMS</text>
+    <text x="30" y="705" font-size="28" font-weight="bold">TOTAL</text><text x="530" y="705" font-size="28" font-weight="bold" text-anchor="end">£24.11</text>
+    <text x="30" y="745" font-size="20">CONTACTLESS VISA</text><text x="530" y="745" font-size="20" text-anchor="end">24.11</text>
+    <text x="30" y="775" font-size="18">CARD ************4821</text>
+    <text x="30" y="830" font-size="18">VAT A 20%   NET 9.25   VAT 1.85</text>
+    <text x="280" y="900" font-size="20" text-anchor="middle">THANK YOU FOR SHOPPING LOCAL</text>
+    <text x="280" y="930" font-size="18" text-anchor="middle">Returns within 28 days with receipt</text>
+  </g>
+</svg>

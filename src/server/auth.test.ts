@@ -4,7 +4,8 @@ import { generateDemoExpenses } from "@/application/demo/demo-data";
 import { parseIsoDate } from "@/domain/dates";
 import type { Database } from "@/infrastructure/db/client";
 import { users } from "@/infrastructure/db/schema";
-import { createTestDb, FakeExchangeRates, FixedClock } from "@/test/helpers";
+import { receipts } from "@/infrastructure/db/schema";
+import { createTestDb, FakeExchangeRates, FixedClock, MemoryImageStore, TINY_JPEG } from "@/test/helpers";
 import { type Auth, createAuth } from "./auth";
 import { createServices, type Services } from "./container";
 import { cleanupDemoAccounts } from "./demo-cleanup";
@@ -96,9 +97,23 @@ describe("Try the demo", () => {
       await post("/sign-up/email", { name: "R", email: "r@example.test", password: "long enough pw" })
     ).json()) as { user: { id: string } };
 
-    expect(await cleanupDemoAccounts(db)).toBe(0);
+    const images = new MemoryImageStore();
+    const photo = { bytes: TINY_JPEG, contentType: "image/jpeg" } as const;
+    for (const owner of [demo.user.id, real.user.id]) {
+      await images.put(`receipts/${owner}/1.jpg`, photo);
+      await db.insert(receipts).values({
+        userId: owner,
+        status: "ready",
+        currency: "GBP",
+        imagePath: `receipts/${owner}/1.jpg`,
+      });
+    }
+
+    expect(await cleanupDemoAccounts(db, images)).toBe(0);
     const tomorrow = new Date(Date.now() + 25 * 60 * 60 * 1000);
-    expect(await cleanupDemoAccounts(db, tomorrow)).toBe(1);
+    expect(await cleanupDemoAccounts(db, images, tomorrow)).toBe(1);
+    // The demo's photo is gone from storage; the real user's is untouched.
+    expect([...images.files.keys()]).toEqual([`receipts/${real.user.id}/1.jpg`]);
 
     const remaining = (await db.select({ id: users.id }).from(users)).map((u) => u.id);
     expect(remaining).toEqual([real.user.id]);

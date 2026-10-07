@@ -1,4 +1,5 @@
 import { getDb } from "@/infrastructure/db/client";
+import { VercelBlobImageStore } from "@/infrastructure/storage/vercel-blob-image-store";
 import { cleanupDemoAccounts } from "@/server/demo-cleanup";
 
 /**
@@ -10,6 +11,6 @@ export async function GET(request: Request) {
   if (!secret || request.headers.get("authorization") !== `Bearer ${secret}`) {
     return new Response("Unauthorized", { status: 401 });
   }
-  const deleted = await cleanupDemoAccounts(getDb());
+  const deleted = await cleanupDemoAccounts(getDb(), new VercelBlobImageStore());
   return Response.json({ deleted });
 }

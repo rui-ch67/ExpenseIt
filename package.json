@@ -13,10 +13,14 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "vercel-build": "drizzle-kit migrate && next build"
+    "vercel-build": "drizzle-kit migrate && next build",
+    "ocr:try": "tsx --tsconfig tsconfig.json scripts/try-receipt-ocr.mts",
+    "smoke:receipts": "tsx --tsconfig tsconfig.json scripts/smoke-receipts.mts"
   },
   "dependencies": {
+    "@google/genai": "^2.27.0",
     "@neondatabase/serverless": "^1.2.0",
+    "@vercel/blob": "^2.8.0",
     "@vercel/functions": "^3.9.11",
     "better-auth": "^1.7.7",
     "drizzle-orm": "^0.45.3",
@@ -37,6 +41,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5",
     "vitest": "^5.0.3"
   },

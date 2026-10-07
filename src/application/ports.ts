@@ -15,7 +15,7 @@ import type { IsoDate, YearMonth } from "@/domain/dates";
 import type { ExchangeRate } from "@/domain/exchange-rate";
 import type { Expense } from "@/domain/expense";
 import type { Money } from "@/domain/money";
-import type { Receipt, ReceiptStatus } from "@/domain/receipt";
+import type { ExtractedReceipt, Receipt, ReceiptStatus } from "@/domain/receipt";
 
 // ── Categories ────────────────────────────────────────────────────────────
 
@@ -104,8 +104,9 @@ export interface HomeAmountUpdate {
 
 export interface ExpenseRepository {
   create(expense: NewExpense): Promise<Expense>;
-  createMany(expenses: readonly NewExpense[]): Promise<void>;
+  createMany(expenses: readonly NewExpense[]): Promise<Expense[]>;
   findById(userId: string, id: string): Promise<Expense | null>;
+  listByReceipt(userId: string, receiptId: string): Promise<Expense[]>;
   update(userId: string, id: string, patch: ExpensePatch): Promise<Expense | null>;
   delete(userId: string, id: string): Promise<boolean>;
   /** Newest first (by date spent, then by when it was logged). */
@@ -184,6 +185,44 @@ export interface SettingsRepository {
 }
 
 // ── External services ─────────────────────────────────────────────────────
+
+export const RECEIPT_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
+export type ReceiptImageType = (typeof RECEIPT_IMAGE_TYPES)[number];
+
+export interface ReceiptImage {
+  readonly bytes: Uint8Array;
+  readonly contentType: ReceiptImageType;
+}
+
+export interface ReceiptExtraction {
+  readonly receipt: ExtractedReceipt;
+  /** Which model produced it, for debugging accuracy. */
+  readonly model: string;
+  /** The provider's raw answer, stored alongside the receipt. */
+  readonly raw: unknown;
+}
+
+/** Reads a receipt photo (OCR + understanding). Gemini today; swappable. */
+export interface ReceiptExtractor {
+  extract(image: ReceiptImage, hints: { fallbackCurrency: CurrencyCode }): Promise<ReceiptExtraction>;
+}
+
+/** Private storage for receipt photos. Paths are only ever served after an ownership check. */
+export interface ImageStore {
+  put(path: string, image: ReceiptImage): Promise<void>;
+  get(path: string): Promise<{ body: ReadableStream<Uint8Array>; contentType: string } | null>;
+  delete(paths: readonly string[]): Promise<void>;
+}
+
+/**
+ * Daily usage limits, so the free OCR quota can't be drained by one person
+ * (or by the shared demo). `tryConsume` counts one use and returns false,
+ * without counting, once `limit` is reached.
+ */
+export interface UsageLimiter {
+  tryConsume(key: string, day: IsoDate, limit: number): Promise<boolean>;
+  release(key: string, day: IsoDate): Promise<void>;
+}
 
 export interface ExchangeRateProvider {
   /** The published rate for `on`, or the latest one before it. */

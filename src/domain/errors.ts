@@ -5,7 +5,7 @@
 export class DomainError extends Error {
   constructor(
     message: string,
-    readonly code: "validation" | "not_found" | "conflict" | "unavailable",
+    readonly code: "validation" | "not_found" | "conflict" | "unavailable" | "limit_reached",
   ) {
     super(message);
     this.name = new.target.name;
@@ -34,5 +34,12 @@ export class ConflictError extends DomainError {
 export class ServiceUnavailableError extends DomainError {
   constructor(message: string) {
     super(message, "unavailable");
+  }
+}
+
+/** A daily usage limit (such as receipt scans) has been reached. */
+export class LimitReachedError extends DomainError {
+  constructor(message: string) {
+    super(message, "limit_reached");
   }
 }

@@ -66,10 +66,25 @@ export class DrizzleExpenseRepository implements ExpenseRepository {
     return toExpense(row);
   }
 
-  async createMany(list: readonly NewExpense[]): Promise<void> {
+  async createMany(list: readonly NewExpense[]): Promise<Expense[]> {
+    const created: Expense[] = [];
     for (let i = 0; i < list.length; i += BATCH_SIZE) {
-      await this.db.insert(expenses).values(list.slice(i, i + BATCH_SIZE).map(toRow));
+      const rows = await this.db
+        .insert(expenses)
+        .values(list.slice(i, i + BATCH_SIZE).map(toRow))
+        .returning();
+      created.push(...rows.map(toExpense));
     }
+    return created;
+  }
+
+  async listByReceipt(userId: string, receiptId: string): Promise<Expense[]> {
+    const rows = await this.db
+      .select()
+      .from(expenses)
+      .where(and(eq(expenses.userId, userId), eq(expenses.receiptId, receiptId)))
+      .orderBy(desc(expenses.homeAmountMinor));
+    return rows.map(toExpense);
   }
 
   async findById(userId: string, id: string): Promise<Expense | null> {

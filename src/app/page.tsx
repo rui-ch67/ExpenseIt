@@ -44,9 +44,13 @@ export default async function Landing() {
   );
   const after = (desktop: boolean) => (
     <div data-surface="dark" className="relative h-full bg-cat-violet">
-      <div className={desktop ? "absolute top-[14%] right-12 left-[63%]" : "absolute inset-x-5 bottom-5"}>
-        {/* The sample label sits in the panel's flow, so it's always in view. */}
-        <MonthPanel compact={!desktop} label="Sample month from the demo" />
+      {/* Desktop: beside the copy. Phones: centred, so the receipts above cover its top until dragged. */}
+      <div className={desktop ? "absolute top-[12%] right-12 left-[63%]" : "absolute inset-x-5 top-1/2 -translate-y-1/2"}>
+        <MonthPanel
+          compact={!desktop}
+          label="Sample month from the demo"
+          latestClassName={desktop ? "hidden [@media(min-height:940px)]:block" : undefined}
+        />
       </div>
     </div>
   );
@@ -116,12 +120,12 @@ export default async function Landing() {
           />
           {/* Phones: receipts above, the month below, each with the full width. */}
           <Compare
-            className="aspect-[2/3] border-y-2 border-ink lg:hidden"
+            className="aspect-[9/16] border-y-2 border-ink lg:hidden"
             orientation="vertical"
             before={before(false)}
             after={after(false)}
-            min={12}
-            max={88}
+            min={5}
+            max={90}
             initial={47}
             handleAt={84}
           />

@@ -66,3 +66,5 @@ pnpm dev                     # http://localhost:3000
 | `pnpm lint` | Lint |
 | `pnpm db:generate` | Create a new migration after changing `src/infrastructure/db/schema.ts` |
 | `pnpm db:migrate` | Apply pending migrations to the database in `DATABASE_URL` |
+
+Deployments on Vercel run `vercel-build`, which applies pending migrations before building, so the production database schema always matches the code being deployed.

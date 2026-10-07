@@ -9,6 +9,7 @@
 import { sql } from "drizzle-orm";
 import {
   bigint,
+  boolean,
   date,
   index,
   integer,
@@ -19,6 +20,7 @@ import {
   primaryKey,
   text,
   timestamp,
+  unique,
   uniqueIndex,
   uuid,
   varchar,
@@ -112,6 +114,7 @@ export const expenses = pgTable(
     note: text("note").notNull().default(""),
     categoryId: uuid("category_id").references(() => categories.id, { onDelete: "set null" }),
     receiptId: uuid("receipt_id").references(() => receipts.id, { onDelete: "set null" }),
+    recurringRuleId: uuid("recurring_rule_id").references(() => recurringRules.id, { onDelete: "set null" }),
     spentOn: date("spent_on", { mode: "string" }).notNull(),
     amountMinor: minorUnits("amount_minor").notNull(),
     currency: varchar("currency", { length: 3 }).notNull(),
@@ -126,7 +129,51 @@ export const expenses = pgTable(
     index("expenses_user_spent_idx").on(t.userId, t.spentOn.desc(), t.createdAt.desc(), t.id),
     index("expenses_user_category_idx").on(t.userId, t.categoryId),
     index("expenses_receipt_idx").on(t.receiptId),
+    // A recurring payment is logged at most once per date, even if two
+    // catch-ups run at the same time.
+    uniqueIndex("expenses_recurring_once_idx")
+      .on(t.recurringRuleId, t.spentOn)
+      .where(sql`${t.recurringRuleId} is not null`),
   ],
+);
+
+export const recurringFrequency = pgEnum("recurring_frequency", ["weekly", "monthly", "yearly"]);
+
+export const recurringRules = pgTable(
+  "recurring_rules",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: ownerId(),
+    title: varchar("title", { length: 120 }).notNull(),
+    note: text("note").notNull().default(""),
+    categoryId: uuid("category_id").references(() => categories.id, { onDelete: "set null" }),
+    amountMinor: minorUnits("amount_minor").notNull(),
+    currency: varchar("currency", { length: 3 }).notNull(),
+    frequency: recurringFrequency("frequency").notNull(),
+    startsOn: date("starts_on", { mode: "string" }).notNull(),
+    nextDueOn: date("next_due_on", { mode: "string" }),
+    endsOn: date("ends_on", { mode: "string" }),
+    paused: boolean("paused").notNull().default(false),
+    ...timestamps,
+  },
+  (t) => [
+    index("recurring_rules_user_idx").on(t.userId),
+    index("recurring_rules_due_idx").on(t.nextDueOn),
+  ],
+);
+
+/** Monthly limits: one per category, plus one overall (category null). */
+export const budgets = pgTable(
+  "budgets",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: ownerId(),
+    categoryId: uuid("category_id").references(() => categories.id, { onDelete: "cascade" }),
+    amountMinor: minorUnits("amount_minor").notNull(),
+    currency: varchar("currency", { length: 3 }).notNull(),
+    ...timestamps,
+  },
+  (t) => [unique("budgets_user_category_unique").on(t.userId, t.categoryId).nullsNotDistinct()],
 );
 
 /** Cache of published exchange rates, keyed by the date that was asked for. */

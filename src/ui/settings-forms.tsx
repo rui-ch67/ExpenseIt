@@ -3,6 +3,7 @@
 import { ArrowDown, ArrowUp, Check, LoaderCircle, LogOut, Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { deleteAccount } from "@/app/actions/account";
 import {
   changeHomeCurrency,
   createCategory,
@@ -237,5 +238,51 @@ export function SignOutButton() {
       <LogOut aria-hidden className="size-5" strokeWidth={2.5} />
       Sign out
     </Button>
+  );
+}
+
+/** Deleting an account takes typing "delete": it can't be undone. */
+export function DeleteAccount({ isDemo }: { isDemo: boolean }) {
+  const [open, setOpen] = useState(false);
+  const [typed, setTyped] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+  if (!open) {
+    return (
+      <Button variant="ghost" className="justify-self-start px-0 text-danger hover:bg-transparent hover:underline" onClick={() => setOpen(true)}>
+        <Trash2 aria-hidden className="size-4" strokeWidth={2.5} />
+        {isDemo ? "Delete this demo account now" : "Delete my account"}
+      </Button>
+    );
+  }
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        startTransition(async () => {
+          const result = await deleteAccount(typed);
+          if (result && !result.ok) setError(result.error);
+        });
+      }}
+      className="grid gap-3 border-2 border-danger p-4"
+    >
+      <p className="font-semibold">
+        This deletes every expense, receipt, photo, budget and recurring payment in this account. It can&rsquo;t be undone.
+      </p>
+      <label className="grid gap-1.5">
+        <span className="text-sm font-bold">Type &ldquo;delete&rdquo; to confirm</span>
+        <Input value={typed} onChange={(e) => setTyped(e.target.value)} autoComplete="off" />
+      </label>
+      {error && <p role="alert" className="text-sm font-semibold text-danger">{error}</p>}
+      <div className="flex flex-wrap gap-2">
+        <Button type="submit" variant="danger" disabled={pending || typed.trim().toLowerCase() !== "delete"}>
+          {pending && <LoaderCircle aria-hidden className="size-5 animate-spin" strokeWidth={2.5} />}
+          Delete everything
+        </Button>
+        <Button type="button" variant="secondary" onClick={() => setOpen(false)} disabled={pending}>
+          Keep my account
+        </Button>
+      </div>
+    </form>
   );
 }

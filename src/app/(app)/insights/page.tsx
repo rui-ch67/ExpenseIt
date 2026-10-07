@@ -26,11 +26,22 @@ export default async function InsightsPage({ searchParams }: PageProps<"/insight
   const recapMonth = isCurrent ? addMonths(month, -1) : month;
   const today = todayIn();
 
-  const [summary, trend, recapSummary] = await Promise.all([
+  const { budgets, recurring } = getServices();
+  const [summary, trend, recapSummary, budgetOverview, perMonth, rules] = await Promise.all([
     insights.monthSummary(user.id, month),
     insights.monthlyTrend(user.id, 6, month),
     insights.monthSummary(user.id, recapMonth),
+    budgets.overview(user.id),
+    recurring.monthlyCost(user.id),
+    recurring.list(user.id),
   ]);
+  const watched = [
+    ...(budgetOverview.overall ? [budgetOverview.overall] : []),
+    ...budgetOverview.categories,
+  ];
+  const overCount = watched.filter((b) => b.state === "over").length;
+  const nearCount = watched.filter((b) => b.state === "near").length;
+  const activeRules = rules.filter((r) => !r.paused && r.nextDueOn).length;
   const monthName = formatMonth(month, "short");
   const comparison = isCurrent ? summary.previousToDate : summary.previousTotal;
   const diff = comparison && !comparison.isZero() ? summary.total.subtract(comparison) : null;
@@ -83,6 +94,29 @@ export default async function InsightsPage({ searchParams }: PageProps<"/insight
           </span>
         </Link>
       )}
+
+      <nav aria-label="Planning" className="mt-6 grid gap-2 sm:grid-cols-2">
+        <Link href="/budgets" className="grid gap-1 border-2 border-ink p-4 no-underline hover:bg-wash">
+          <span className="text-xl font-extrabold">Budgets</span>
+          <span className="text-sm text-muted">
+            {watched.length === 0
+              ? "Set a monthly limit and get a warning before you go over."
+              : overCount > 0
+                ? `${overCount} over budget this month${nearCount ? `, ${nearCount} nearly there` : ""}.`
+                : nearCount > 0
+                  ? `${nearCount} nearly at the limit this month.`
+                  : `All ${watched.length} within budget this month.`}
+          </span>
+        </Link>
+        <Link href="/recurring" className="grid gap-1 border-2 border-ink p-4 no-underline hover:bg-wash">
+          <span className="text-xl font-extrabold">Recurring</span>
+          <span className="text-sm text-muted">
+            {activeRules === 0
+              ? "Rent, bills and subscriptions, logged automatically."
+              : `${activeRules} active, about ${perMonth.format()} a month.`}
+          </span>
+        </Link>
+      </nav>
 
       <div className="mt-10 grid gap-12 lg:grid-cols-2">
         <section aria-labelledby="where-heading">

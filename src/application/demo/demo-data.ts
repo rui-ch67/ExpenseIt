@@ -20,12 +20,22 @@ export interface DemoExpenseSeed {
   readonly note?: string;
 }
 
-const MONTHLY: ReadonlyArray<{ day: number; title: string; category: string; amount: string }> = [
+/** Regular payments, set up as recurring rules so the app logs them itself. */
+export const DEMO_RECURRING: ReadonlyArray<{ day: number; title: string; category: string; amount: string }> = [
   { day: 1, title: "Rent", category: "Bills", amount: "625.00" },
+  { day: 2, title: "Bus pass", category: "Transport", amount: "35.00" },
   { day: 3, title: "PureGym membership", category: "Health", amount: "24.99" },
   { day: 5, title: "giffgaff phone plan", category: "Bills", amount: "10.00" },
   { day: 12, title: "Spotify Premium Student", category: "Entertainment", amount: "5.99" },
   { day: 15, title: "Octopus Energy", category: "Bills", amount: "48.20" },
+];
+
+/** Monthly budgets for the demo, so the warnings have something to say. */
+export const DEMO_BUDGETS: ReadonlyArray<{ category: string | null; amount: string }> = [
+  { category: null, amount: "1300.00" },
+  { category: "Food", amount: "60.00" },
+  { category: "Grocery", amount: "150.00" },
+  { category: "Entertainment", amount: "40.00" },
 ];
 
 const GROCERS = ["Tesco", "Sainsbury's", "Aldi", "Lidl", "Co-op"];
@@ -69,20 +79,6 @@ export function generateDemoExpenses(today: IsoDate, seed = 2025): DemoExpenseSe
   const add = (seedItem: Omit<DemoExpenseSeed, "currency"> & { currency?: CurrencyCode }) => {
     if (seedItem.spentOn <= today) seeds.push({ currency: "GBP", ...seedItem });
   };
-
-  for (let offset = -2; offset <= 0; offset++) {
-    const month = addMonths(thisMonth, offset);
-    for (const bill of MONTHLY) {
-      const spentOn = addDays(firstDayOf(month), bill.day - 1);
-      add({ title: bill.title, category: bill.category, spentOn, amount: bill.amount });
-    }
-    add({
-      title: "Bus pass",
-      category: "Transport",
-      spentOn: addDays(firstDayOf(month), 1),
-      amount: "35.00",
-    });
-  }
 
   for (let day = start; day <= today; day = addDays(day, 1)) {
     const weekday = new Date(`${day}T12:00:00Z`).getUTCDay();

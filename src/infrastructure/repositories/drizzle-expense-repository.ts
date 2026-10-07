@@ -1,4 +1,4 @@
-import { and, desc, eq, gte, ilike, inArray, isNull, lte, ne, or, type SQL, sql } from "drizzle-orm";
+import { and, desc, eq, gte, ilike, inArray, isNotNull, isNull, lte, ne, or, type SQL, sql } from "drizzle-orm";
 import type {
   CategoryTotal,
   CurrencyTotal,
@@ -31,6 +31,7 @@ function toRow(expense: NewExpense): ExpenseRow {
     note: expense.note,
     categoryId: expense.categoryId,
     receiptId: expense.receiptId,
+    recurringRuleId: expense.recurringRuleId ?? null,
     spentOn: expense.spentOn,
     amountMinor: expense.amount.minor,
     currency: expense.amount.currency,
@@ -68,13 +69,14 @@ export class DrizzleExpenseRepository implements ExpenseRepository {
     return toExpense(row);
   }
 
-  async createMany(list: readonly NewExpense[]): Promise<Expense[]> {
+  async createMany(
+    list: readonly NewExpense[],
+    options: { skipDuplicates?: boolean } = {},
+  ): Promise<Expense[]> {
     const created: Expense[] = [];
     for (let i = 0; i < list.length; i += BATCH_SIZE) {
-      const rows = await this.db
-        .insert(expenses)
-        .values(list.slice(i, i + BATCH_SIZE).map(toRow))
-        .returning();
+      const insert = this.db.insert(expenses).values(list.slice(i, i + BATCH_SIZE).map(toRow));
+      const rows = await (options.skipDuplicates ? insert.onConflictDoNothing() : insert).returning();
       created.push(...rows.map(toExpense));
     }
     return created;
@@ -239,6 +241,14 @@ export class DrizzleExpenseRepository implements ExpenseRepository {
       .groupBy(expenses.currency)
       .orderBy(desc(homeTotal));
     return rows.map((r) => ({ ...r, currency: parseCurrencyCode(r.currency) }));
+  }
+
+  async recurringTotal(userId: string, homeCurrency: CurrencyCode, from: IsoDate, to: IsoDate): Promise<number> {
+    const [row] = await this.db
+      .select({ homeMinor: homeTotal })
+      .from(expenses)
+      .where(and(this.inRange(userId, homeCurrency, from, to), isNotNull(expenses.recurringRuleId)));
+    return row?.homeMinor ?? 0;
   }
 
   async listNotInHomeCurrency(userId: string, homeCurrency: CurrencyCode): Promise<Expense[]> {

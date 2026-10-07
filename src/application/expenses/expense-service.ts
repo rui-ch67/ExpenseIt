@@ -29,6 +29,8 @@ export interface ExpenseInput {
   readonly categoryId?: string | null;
   readonly note?: string;
   readonly receiptId?: string | null;
+  /** Set by recurring payments when they log an expense. */
+  readonly recurringRuleId?: string | null;
 }
 
 export const MAX_PAGE_SIZE = 100;
@@ -66,12 +68,16 @@ export class ExpenseService {
    * Logs several expenses in one insert: either all are saved or none are.
    * Every input is validated and converted before anything is written.
    */
-  async logMany(userId: string, inputs: readonly ExpenseInput[]): Promise<Expense[]> {
+  async logMany(
+    userId: string,
+    inputs: readonly ExpenseInput[],
+    options: { skipDuplicates?: boolean } = {},
+  ): Promise<Expense[]> {
     const prepared: NewExpense[] = [];
     for (const input of inputs) {
-      prepared.push({ userId, ...(await this.prepare(userId, input)) });
+      prepared.push({ userId, ...(await this.prepare(userId, input)), recurringRuleId: input.recurringRuleId ?? null });
     }
-    return this.expenses.createMany(prepared);
+    return this.expenses.createMany(prepared, options);
   }
 
   listForReceipt(userId: string, receiptId: string): Promise<Expense[]> {

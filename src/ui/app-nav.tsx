@@ -17,6 +17,9 @@ function isActive(pathname: string, href: string) {
   if (href === "/activity") {
     return ["/activity", "/expenses", "/receipts"].some((p) => pathname.startsWith(p));
   }
+  if (href === "/insights") {
+    return ["/insights", "/budgets", "/recurring"].some((p) => pathname.startsWith(p));
+  }
   return pathname.startsWith(href);
 }
 

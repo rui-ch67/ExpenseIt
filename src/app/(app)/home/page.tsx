@@ -1,6 +1,9 @@
 import { Camera, PenLine } from "lucide-react";
 import Link from "next/link";
 import type { MonthSummary } from "@/application/insights/insights-service";
+import type { Upcoming } from "@/application/recurring/recurring-service";
+import type { BudgetStatus } from "@/domain/budget";
+import type { Category } from "@/domain/category";
 import {
   addMonths,
   firstDayOf,
@@ -42,11 +45,14 @@ export default async function HomePage({ searchParams }: PageProps<"/home">) {
   const month = pickMonth((await searchParams).month, current);
   const isCurrent = month === current;
 
-  const [summary, recent, categoryList, previousRecap] = await Promise.all([
+  const { budgets, recurring } = getServices();
+  const [summary, recent, categoryList, previousRecap, urgent, upcoming] = await Promise.all([
     insights.monthSummary(user.id, month),
     expenses.list(user.id, { limit: 12, from: firstDayOf(month), to: lastDayOf(month) }),
     categories.list(user.id),
     isCurrent ? insights.monthSummary(user.id, addMonths(month, -1)) : Promise.resolve(null),
+    isCurrent ? budgets.mostUrgent(user.id) : Promise.resolve(null),
+    isCurrent ? recurring.upcoming(user.id, 7) : Promise.resolve([]),
   ]);
   const byId = categoryMap(categoryList);
   const recentViews = recent.items.map((e) => toExpenseView(e, byId));
@@ -56,7 +62,15 @@ export default async function HomePage({ searchParams }: PageProps<"/home">) {
     <main className="mx-auto max-w-5xl lg:px-8 lg:py-8">
       <MonthBlock summary={summary} month={month} current={current} isCurrent={isCurrent} />
 
-      <Stories summary={summary} isCurrent={isCurrent} previous={previousRecap} today={today} />
+      <Stories
+        summary={summary}
+        isCurrent={isCurrent}
+        previous={previousRecap}
+        today={today}
+        nextPayment={upcoming[0] ? { ...upcoming[0], category: categoryList.find((c) => c.id === upcoming[0].rule.categoryId) ?? null } : null}
+      />
+
+      {urgent && <BudgetAlert status={urgent} />}
 
       <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_20rem] lg:items-start">
         <div className="grid gap-6">
@@ -152,11 +166,13 @@ function Stories({
   isCurrent,
   previous,
   today,
+  nextPayment,
 }: {
   summary: MonthSummary;
   isCurrent: boolean;
   previous: MonthSummary | null;
   today: IsoDate;
+  nextPayment: (Upcoming & { category: Category | null }) | null;
 }) {
   const dayOfMonth = Number(today.slice(8, 10));
   const cards: React.ReactNode[] = [];
@@ -219,10 +235,53 @@ function Stories({
       </StoryCard>,
     );
   }
+  if (nextPayment) {
+    cards.push(
+      <StoryCard
+        key="next"
+        href="/recurring"
+        color={nextPayment.category?.color ?? null}
+        tag={nextPayment.category?.name ?? "uncategorised"}
+      >
+        <span className="text-[2rem] leading-none font-extrabold tracking-[-0.03em]">{nextPayment.rule.amount.format()}</span>
+        <span className="text-[13px] font-semibold">
+          {nextPayment.rule.title}, {formatDay(nextPayment.dueOn, today).replace(/^Today$/, "today")}
+        </span>
+      </StoryCard>,
+    );
+  }
   if (recap && !earlyInMonth) cards.push(recap);
 
   if (cards.length === 0) return null;
   return <StoryRail label="This month at a glance">{cards}</StoryRail>;
+}
+
+/** The one budget most worth a warning right now, shown as a band. */
+function BudgetAlert({ status }: { status: BudgetStatus & { category: Category | null } }) {
+  const ink = inkFor(status.category?.color ?? null);
+  const name = status.category?.name.toLowerCase() ?? "overall";
+  const over = status.state === "over";
+  return (
+    <Link
+      href="/budgets"
+      className={cn("mx-4 mt-4 flex items-stretch border-2 no-underline hover:bg-wash lg:mx-0", over ? "border-danger" : "border-ink")}
+    >
+      <span className={cn("flex items-center px-3 text-sm font-extrabold lowercase", ink.bg, ink.text)}>{name}</span>
+      <span className="flex-1 px-3 py-2.5 text-[15px] font-semibold">
+        {over ? (
+          <>
+            <strong className="text-danger">{status.remaining.abs().format()} over</strong> your{" "}
+            {status.budget.amount.format()} {status.category ? `${name} ` : ""}budget
+          </>
+        ) : (
+          <>
+            <strong>{status.remaining.format()} left</strong> of your {status.budget.amount.format()}{" "}
+            {status.category ? `${name} ` : ""}budget
+          </>
+        )}
+      </span>
+    </Link>
+  );
 }
 
 function CategoryRoster({ summary }: { summary: MonthSummary }) {

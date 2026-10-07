@@ -1,3 +1,4 @@
+import { Download } from "lucide-react";
 import { CURRENCIES, CURRENCY_CODES } from "@/domain/currency";
 import type { ReactNode } from "react";
 import { getServices } from "@/server/services";
@@ -5,7 +6,7 @@ import { requireUser } from "@/server/session";
 import { toCategoryView } from "@/server/views";
 import { ButtonLink } from "@/ui/button";
 import { PageHeader } from "@/ui/page-header";
-import { CategoryManager, CurrencyForm, SignOutButton } from "@/ui/settings-forms";
+import { CategoryManager, CurrencyForm, DeleteAccount, SignOutButton } from "@/ui/settings-forms";
 
 export const metadata = { title: "Settings" };
 
@@ -45,6 +46,16 @@ export default async function SettingsPage() {
 
         <Section title="Categories" description="Tap one to rename it, change its colour or delete it. Deleting keeps its expenses.">
           <CategoryManager categories={list.map(toCategoryView)} />
+        </Section>
+
+        <Section title="Your data" description="Download everything you've logged, or delete your account and all of it.">
+          <div className="flex flex-wrap gap-2">
+            <a href="/api/export" className="inline-flex items-center gap-2 border-2 border-ink px-4 py-3 font-bold no-underline hover:bg-wash">
+              <Download aria-hidden className="size-5" strokeWidth={2.5} />
+              Download all expenses (CSV)
+            </a>
+          </div>
+          <DeleteAccount isDemo={user.isDemo} />
         </Section>
 
         <Section title="About">

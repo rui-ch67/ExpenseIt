@@ -9,6 +9,7 @@
  * Every repository method takes `userId`, so a query can't accidentally
  * reach another user's data: ownership is part of the signature.
  */
+import type { Budget } from "@/domain/budget";
 import type { Category, CategoryColor } from "@/domain/category";
 import type { CurrencyCode } from "@/domain/currency";
 import type { IsoDate, YearMonth } from "@/domain/dates";
@@ -16,6 +17,7 @@ import type { ExchangeRate } from "@/domain/exchange-rate";
 import type { Expense } from "@/domain/expense";
 import type { Money } from "@/domain/money";
 import type { ExtractedReceipt, Receipt, ReceiptStatus } from "@/domain/receipt";
+import type { Frequency, RecurringRule } from "@/domain/recurrence";
 
 // ── Categories ────────────────────────────────────────────────────────────
 
@@ -51,6 +53,7 @@ export interface NewExpense {
   readonly note: string;
   readonly categoryId: string | null;
   readonly receiptId: string | null;
+  readonly recurringRuleId?: string | null;
   readonly spentOn: IsoDate;
   readonly amount: Money;
   readonly homeAmount: Money;
@@ -118,7 +121,11 @@ export interface HomeAmountUpdate {
 
 export interface ExpenseRepository {
   create(expense: NewExpense): Promise<Expense>;
-  createMany(expenses: readonly NewExpense[]): Promise<Expense[]>;
+  /**
+   * Inserts in one statement per batch. With `skipDuplicates`, an expense a
+   * recurring payment already logged for that date is skipped, not an error.
+   */
+  createMany(expenses: readonly NewExpense[], options?: { skipDuplicates?: boolean }): Promise<Expense[]>;
   findById(userId: string, id: string): Promise<Expense | null>;
   listByReceipt(userId: string, receiptId: string): Promise<Expense[]>;
   /** Which of these receipts have already been saved as expenses. */
@@ -164,9 +171,47 @@ export interface ExpenseRepository {
     to: IsoDate,
   ): Promise<CurrencyTotal[]>;
 
+  /** Home-currency total of expenses logged by recurring payments in a range. */
+  recurringTotal(userId: string, homeCurrency: CurrencyCode, from: IsoDate, to: IsoDate): Promise<number>;
+
   /** Expenses whose home amount isn't in `homeCurrency` yet. */
   listNotInHomeCurrency(userId: string, homeCurrency: CurrencyCode): Promise<Expense[]>;
   updateHomeAmounts(userId: string, updates: readonly HomeAmountUpdate[]): Promise<void>;
+}
+
+// ── Budgets ───────────────────────────────────────────────────────────────
+
+export interface BudgetRepository {
+  list(userId: string): Promise<Budget[]>;
+  /** Creates or replaces the budget for a category (or overall, with null). */
+  upsert(userId: string, categoryId: string | null, amount: Money): Promise<Budget>;
+  delete(userId: string, id: string): Promise<boolean>;
+  updateAmounts(userId: string, updates: ReadonlyArray<{ id: string; amount: Money }>): Promise<void>;
+}
+
+// ── Recurring payments ────────────────────────────────────────────────────
+
+export interface NewRecurringRule {
+  readonly userId: string;
+  readonly title: string;
+  readonly note: string;
+  readonly categoryId: string | null;
+  readonly amount: Money;
+  readonly frequency: Frequency;
+  readonly startsOn: IsoDate;
+  readonly nextDueOn: IsoDate | null;
+  readonly endsOn: IsoDate | null;
+  readonly paused: boolean;
+}
+
+export interface RecurringRuleRepository {
+  list(userId: string): Promise<RecurringRule[]>;
+  findById(userId: string, id: string): Promise<RecurringRule | null>;
+  create(rule: NewRecurringRule): Promise<RecurringRule>;
+  update(userId: string, id: string, patch: Partial<Omit<NewRecurringRule, "userId">>): Promise<RecurringRule | null>;
+  delete(userId: string, id: string): Promise<boolean>;
+  /** Active rules with a payment due on or before `today`. */
+  listDue(today: IsoDate, userId?: string): Promise<RecurringRule[]>;
 }
 
 // ── Receipts ──────────────────────────────────────────────────────────────

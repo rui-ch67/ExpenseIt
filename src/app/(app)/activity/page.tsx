@@ -1,4 +1,4 @@
-import { PenLine, ReceiptText } from "lucide-react";
+import { Download, PenLine, ReceiptText } from "lucide-react";
 import { addMonths, todayIn } from "@/domain/dates";
 import { listExpenses } from "@/app/actions/expenses";
 import { getServices } from "@/server/services";
@@ -42,6 +42,15 @@ export default async function ActivityPage({ searchParams }: PageProps<"/activit
         </div>
       </PageHeader>
       <ActivityFilters categories={list.map(toCategoryView)} months={months} />
+      <p className="mt-3 px-4 text-sm lg:px-0">
+        <a
+          href={`/api/export?${new URLSearchParams(Object.entries(filters).filter((e): e is [string, string] => Boolean(e[1])))}`}
+          className="inline-flex items-center gap-1.5 font-bold"
+        >
+          <Download aria-hidden className="size-4" strokeWidth={2.5} />
+          {filtered ? "Download these as CSV" : "Download all as CSV"}
+        </a>
+      </p>
       <div className="mt-6">
         {!result.ok ? (
           <p role="alert" className="px-4 font-semibold text-danger">

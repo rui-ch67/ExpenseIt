@@ -31,6 +31,7 @@ export function toExpense(row: typeof expenses.$inferSelect): Expense {
     note: row.note,
     categoryId: row.categoryId,
     receiptId: row.receiptId,
+    recurringRuleId: row.recurringRuleId,
     spentOn: parseIsoDate(row.spentOn),
     amount: Money.ofMinor(row.amountMinor, currency),
     homeAmount: Money.ofMinor(row.homeAmountMinor, homeCurrency),

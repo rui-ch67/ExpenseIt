@@ -17,6 +17,8 @@ export interface Expense {
   /** `null` means uncategorised: deleting a category never deletes spending. */
   readonly categoryId: string | null;
   readonly receiptId: string | null;
+  /** Set when the expense was logged automatically by a recurring payment. */
+  readonly recurringRuleId: string | null;
   readonly spentOn: IsoDate;
   readonly amount: Money;
   readonly homeAmount: Money;

@@ -1,4 +1,4 @@
-import { Receipt } from "lucide-react";
+import { Receipt, Repeat } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { deleteExpense } from "@/app/actions/expenses";
@@ -34,6 +34,15 @@ export default async function EditExpensePage({ params }: PageProps<"/expenses/[
         {expense.homeAmount.format()} on {formatLongDate(expense.spentOn)}
         {isForeign && ` (${expense.amount.format()} at ${expense.fxRate}, the rate on ${formatLongDate(expense.fxRateDate)})`}
       </p>
+      {expense.recurringRuleId && (
+        <Link
+          href={`/recurring/${expense.recurringRuleId}`}
+          className="mb-6 flex items-center gap-2 border-2 border-ink px-3 py-2.5 font-bold no-underline hover:bg-wash"
+        >
+          <Repeat aria-hidden className="size-5" strokeWidth={2.5} />
+          Logged automatically by a recurring payment · manage it
+        </Link>
+      )}
       {expense.receiptId && (
         <Link
           href={`/receipts/${expense.receiptId}`}

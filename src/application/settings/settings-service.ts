@@ -1,6 +1,8 @@
 import { type CurrencyCode, DEFAULT_HOME_CURRENCY, parseCurrencyCode } from "@/domain/currency";
 import type { CurrencyConverter } from "../currency/currency-converter";
 import type {
+  BudgetRepository,
+  Clock,
   ExpenseRepository,
   HomeAmountUpdate,
   SettingsRepository,
@@ -11,7 +13,9 @@ export class SettingsService {
   constructor(
     private readonly settings: SettingsRepository,
     private readonly expenses: ExpenseRepository,
+    private readonly budgets: BudgetRepository,
     private readonly converter: CurrencyConverter,
+    private readonly clock: Clock,
   ) {}
 
   async get(userId: string): Promise<UserSettings> {
@@ -43,7 +47,8 @@ export class SettingsService {
     const current = await this.get(userId);
     const pending = await this.expenses.listNotInHomeCurrency(userId, homeCurrency);
 
-    if (current.homeCurrency === homeCurrency && pending.length === 0) {
+    const staleBudgets = (await this.budgets.list(userId)).some((b) => b.amount.currency !== homeCurrency);
+    if (current.homeCurrency === homeCurrency && pending.length === 0 && !staleBudgets) {
       return current;
     }
 
@@ -62,7 +67,16 @@ export class SettingsService {
       });
     }
 
+    // Budgets are limits for the future, so they convert at today's rate.
+    const budgetUpdates = [];
+    for (const budget of await this.budgets.list(userId)) {
+      if (budget.amount.currency === homeCurrency) continue;
+      const { converted } = await this.converter.convert(budget.amount, homeCurrency, this.clock.today());
+      budgetUpdates.push({ id: budget.id, amount: converted });
+    }
+
     await this.expenses.updateHomeAmounts(userId, updates);
+    await this.budgets.updateAmounts(userId, budgetUpdates);
     const next = { userId, homeCurrency };
     await this.settings.save(next);
     return next;

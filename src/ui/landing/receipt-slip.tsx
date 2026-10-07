@@ -10,29 +10,18 @@ export interface Slip {
 }
 
 /** A loose till receipt, set in a receipt face: the "before" of the page. */
-export function ReceiptSlip({
-  slip,
-  small = false,
-  className,
-  style,
-}: {
-  slip: Slip;
-  small?: boolean;
-  className?: string;
-  style?: React.CSSProperties;
-}) {
+export function ReceiptSlip({ slip, className, style }: { slip: Slip; className?: string; style?: React.CSSProperties }) {
   return (
     <div
       aria-hidden
       style={style}
       className={cn(
-        "absolute border border-[#d6d6d2] bg-paper text-ink",
-        small ? "w-[8.75rem] px-2.5 pt-2 pb-2.5 text-[9px] leading-[1.5]" : "w-[13.5rem] px-4 pt-3.5 pb-4 text-[12.5px] leading-[1.55]",
+        "absolute w-[13.5rem] border border-[#d6d6d2] bg-paper px-4 pt-3.5 pb-4 text-[12.5px] leading-[1.55] text-ink",
         receiptFace.className,
         className,
       )}
     >
-      <p className={cn("mb-1.5 text-center font-bold uppercase", small ? "text-[10px]" : "text-[13.5px]")}>{slip.merchant}</p>
+      <p className="mb-1.5 text-center text-[13.5px] font-bold uppercase">{slip.merchant}</p>
       {slip.lines.map(([label, price]) => (
         <p key={label} className="flex justify-between gap-3 uppercase">
           <span className="truncate">{label}</span>

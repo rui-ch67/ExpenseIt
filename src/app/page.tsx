@@ -1,4 +1,4 @@
-import { ArrowRight, ChevronsLeftRight, CodeXml } from "lucide-react";
+import { ArrowRight, ChevronsLeftRight, ChevronsUpDown, CodeXml } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getCurrentUser } from "@/server/session";
@@ -39,18 +39,15 @@ export default async function Landing() {
               className={tallOnly ? "hidden [@media(min-height:860px)]:block" : undefined}
             />
           ))
-        : MOBILE_SLIPS.map(({ slip, style }, index) => <ReceiptSlip key={index} slip={slip} style={style} small />)}
+        : MOBILE_SLIPS.map(({ slip, style }, index) => <ReceiptSlip key={index} slip={slip} style={style} />)}
     </div>
   );
   const after = (desktop: boolean) => (
     <div data-surface="dark" className="relative h-full bg-cat-violet">
-      <div className={desktop ? "absolute top-[14%] right-12 left-[63%]" : "absolute top-6 right-3 left-[53%]"}>
-        {/* The sample label sits in the panel's flow, so it's always in the first viewport. */}
-        <MonthPanel compact={!desktop} label={desktop ? "Sample month from the demo" : undefined} />
+      <div className={desktop ? "absolute top-[14%] right-12 left-[63%]" : "absolute inset-x-5 bottom-5"}>
+        {/* The sample label sits in the panel's flow, so it's always in view. */}
+        <MonthPanel compact={!desktop} label="Sample month from the demo" />
       </div>
-      {!desktop && (
-        <span className="absolute right-3 bottom-3 bg-ink/40 px-2 py-1 text-xs font-bold text-white">Sample month</span>
-      )}
     </div>
   );
 
@@ -90,8 +87,8 @@ export default async function Landing() {
                 From a pocket of receipts to a month you can read.
               </h1>
               <p className="mt-5 max-w-md text-lg font-semibold lg:text-xl">
-                Snap each receipt. ExpenseIt reads every line and files it, so the pile on the left becomes the month on the
-                right.
+                Snap each receipt. ExpenseIt reads every line and files it under the right category, so the pile turns into
+                a month you can see at a glance.
               </p>
               <div className="mt-7 flex flex-wrap items-start gap-3">
                 <DemoButton />
@@ -117,16 +114,21 @@ export default async function Landing() {
             max={100}
             initial={60}
           />
+          {/* Phones: receipts above, the month below, each with the full width. */}
           <Compare
-            className="mx-5 aspect-[4/5] border-2 border-ink lg:hidden"
+            className="aspect-[2/3] border-y-2 border-ink lg:hidden"
+            orientation="vertical"
             before={before(false)}
             after={after(false)}
-            min={4}
-            max={96}
-            initial={50}
-            handleTop={86}
+            min={12}
+            max={88}
+            initial={47}
+            handleAt={84}
           />
-          <p className="px-5 pt-3 pb-2 text-sm font-bold lg:hidden">Drag the handle to compare</p>
+          <p className="flex items-center gap-1.5 px-5 pt-3 pb-2 text-sm font-bold lg:hidden">
+            <ChevronsUpDown aria-hidden className="size-4" strokeWidth={2.5} />
+            Drag the handle to compare
+          </p>
         </section>
 
         <section id="how" aria-labelledby="how-heading" className="mx-auto max-w-[90rem] scroll-mt-20 px-5 pt-24 pb-20 lg:px-12 lg:pt-32">
@@ -319,9 +321,12 @@ const DESKTOP_SLIPS: Array<{ slip: (typeof SLIPS)[number]; style: React.CSSPrope
   { slip: SLIPS[5], style: { left: "89%", bottom: "-40px", transform: "rotate(12deg)" } },
 ];
 
+/** Phones: a heap across the top half; the lower ones appear as you drag down. */
 const MOBILE_SLIPS = [
-  { slip: SLIPS[0], style: { left: "4%", top: "5%", transform: "rotate(-6deg)" } },
-  { slip: SLIPS[1], style: { left: "9%", top: "33%", transform: "rotate(7deg)" } },
-  { slip: SLIPS[4], style: { left: "2%", top: "55%", transform: "rotate(-9deg)" } },
-  { slip: SLIPS[2], style: { left: "11%", top: "70%", transform: "rotate(5deg)" } },
+  { slip: SLIPS[1], style: { left: "44%", top: "2%", transform: "rotate(7deg)" } },
+  { slip: SLIPS[4], style: { left: "-10%", top: "5%", transform: "rotate(-8deg)" } },
+  { slip: SLIPS[0], style: { left: "12%", top: "17%", transform: "rotate(3deg)" } },
+  { slip: SLIPS[2], style: { left: "50%", top: "27%", transform: "rotate(-6deg)" } },
+  { slip: SLIPS[3], style: { left: "2%", top: "56%", transform: "rotate(8deg)" } },
+  { slip: SLIPS[5], style: { left: "42%", top: "66%", transform: "rotate(-5deg)" } },
 ];
